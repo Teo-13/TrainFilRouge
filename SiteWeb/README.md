@@ -35,6 +35,10 @@ Dans un autre terminal:
 ```powershell
 cd frontend
 npm install
+
+npm install react-router
+npm install react-router-dom
+
 npm run dev
 ```
 
