@@ -1,16 +1,15 @@
-from asyncio.windows_events import NULL
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app)  # autorise React à appeler l'API
+CORS(app)  # autorise React a appeler l'API
 
 
 @app.route("/api/hello")
 def hello():
-    return jsonify({"message": "Bonjour depuis Flask 🚀"})
+    return jsonify({"message": "Bonjour depuis Flask"})
+
 
 @app.route("/api/users")
 def users():
@@ -27,12 +26,11 @@ def data():
     city = "Paris"
 
     if temperature is None:
-        message = "Erreur : la température n'est pas disponible."
+        message = "Erreur : la temperature n'est pas disponible."
     elif humidity > 45:
-        message ="Attention, l'humidité est élevée !"
+        message = "Attention, l'humidite est elevee !"
     else:
-        message ="L'humidité est dans la normale."
-
+        message = "L'humidite est dans la normale."
 
     return jsonify({
         "temperature": temperature,
@@ -41,19 +39,39 @@ def data():
         "message": message
     })
 
+
 @app.route("/api/send", methods=["POST"])
-def Formulaire():
+def formulaire():
+    data = request.json or {}
+    name = str(data.get("name", "")).strip()
+    age_raw = str(data.get("age", "")).strip()
 
-    data = request.json  # 1 récupérer le JSON envoyé
-    name = data["name"]
-    age = data["age"]
+    print(f"le nom est : {name} et l'age est : {age_raw}")
 
-    print(name, age)
+    
+    if age_raw == "":
+        return jsonify({"status": "error", "message": "Le champ age est obligatoire"}), 400
+
+    try:
+        age = int(age_raw)
+    except ValueError:
+        return jsonify({"status": "error", "message": "Le champ age doit etre un entier"}), 400
+
+    if age < 18:
+        prefix = "Vous etes trop jeune ! c'est "
+    elif age > 60:
+        prefix = "Vous etes vieux ! c'est "
+    else:
+        prefix = "Vous avez un age normal ! c'est "
+
+    resultat_age = f"{prefix}{age}"
 
     return jsonify({
         "status": "ok",
-        "message": f"Données reçues : {name}, {age}"
+        "message": f"Donnees recues : {name}, {age}, {resultat_age}",
+        "resultatAge": resultat_age
     })
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

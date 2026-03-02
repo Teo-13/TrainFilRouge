@@ -4,8 +4,20 @@ const Home = () => {
 
     return (
         <div>
-            <h1>Accueil</h1>
-            <p>Bienvenue sur notre site web ! Nous sommes ravis de vous accueillir ici. Explorez nos différentes sections pour en savoir plus sur nos services, notre équipe et nos projets. N'hésitez pas à nous contacter si vous avez des questions ou si vous souhaitez collaborer avec nous. Bonne visite !</p>
+            <section className="AfficheBandeau">
+                <h1>Voyager en train, c'est bien ?</h1>
+                <p>Est ce que</p>
+            </section>
+            <section className="trailer">
+                <h3>pour vous</h3>
+                <div className="conteneur">
+                    <div className="carte1 carte">1</div>
+                    <div className="carte2 carte">2</div>
+                    <div className="carte3 carte">3</div>
+                    <div className="carte4 carte">4</div>
+                    <div className="carte5 carte">5</div>
+                </div>
+            </section>
         </div>
     )
 }

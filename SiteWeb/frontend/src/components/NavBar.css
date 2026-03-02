@@ -4,3 +4,38 @@ nav {
     border-bottom: 3px solid #272727;
     display: flex;
 }
+
+nav .gauche {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 20px;
+}
+
+nav .droite {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+    padding-right: 20px;
+}
+
+nav .gauche a {
+    text-decoration: none;
+    color: #272727;
+    font-weight: 500;
+    font-size: 25px;
+}
+
+nav .droite a {
+    text-decoration: none;
+    color: #272727;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+nav .droite a:hover {
+    color: #007BFF;
+}
+
+

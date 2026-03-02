@@ -8,14 +8,16 @@ const NavBar = () => {
     return (
         <nav>
 
-            <Link to="/">
-                <span>
-                    {/* <BiLogoReact className='text-6xl'/> */}
-                    <span>React Router</span>
-                </span>
-            </Link>
+            <div className="gauche">
+                <Link to="/">
+                    <span>
+                        {/* <BiLogoReact className='text-6xl'/> */}
+                        <span>Train Fil Rouge</span>
+                    </span>
+                </Link>
+            </div>
 
-            <div>
+            <div className="droite">
                 <Link to="/">
                     Accueil
                 </Link>
