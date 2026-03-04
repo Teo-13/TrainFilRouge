@@ -161,8 +161,10 @@ const Contact = () => {
         <div>
           <input type="text" placeholder="Ville de départ" value={villedepart} onChange={(e) => setVilledepart(e.target.value)}/>
           <input type="text" placeholder="Ville d'arrivée" value={villearrivee} onChange={(e) => setVillearrivee(e.target.value)}/>
-          
-          <p>{villedepart} vers  {villearrivee}</p>
+
+          <p>{villedepart === "" ? "La ville de départ n'est pas définie" : villedepart}</p>
+          <p> vers  </p>
+          <p>{villearrivee === "" ? "La ville d'arrivée n'est pas définie" : villearrivee}</p>
         </div>
       </div>
     </div>
