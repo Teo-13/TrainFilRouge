@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./contact.css";
 
 type User = {
   id: number;
@@ -28,6 +29,11 @@ const Contact = () => {
   const [villedepart, setVilledepart] = useState("");
   const [villearrivee, setVillearrivee] = useState("");
 
+  let color ="";
+  if (dataMessage === "Attention, l'humidite est elevee !") {
+    color = "red";
+  }
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError("");
@@ -127,7 +133,7 @@ const Contact = () => {
           <p>Temperature : {temperature} C</p>
           <p>{checkTemperature(temperature)}</p>
           <p>Humidite : {humidity} %</p>
-          <p>{dataMessage}</p>
+          <p style={{ color }}> {dataMessage}</p>
           <p>Ville : {city}</p>
         </div>
 

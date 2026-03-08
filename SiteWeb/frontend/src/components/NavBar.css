@@ -1,7 +1,12 @@
+:root {
+  --blue: rgb(0, 119, 255);
+  --gris: #272727;
+}
+
 nav {
     width: 100%;
     height: 90px;
-    border-bottom: 3px solid #272727;
+    border-bottom: 3px solid var(--gris);
     display: flex;
 }
 
@@ -11,6 +16,7 @@ nav .gauche {
     gap: 10px;
     padding-left: 20px;
 }
+
 
 nav .droite {
     display: flex;
@@ -36,6 +42,13 @@ nav .droite a {
 
 nav .droite a:hover {
     color: #007BFF;
+}
+
+nav .droite .cercle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 5px;
 }
 
 

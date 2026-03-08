@@ -1,10 +1,47 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import pandas as pd
+import os
 
 
 app = Flask(__name__)
 CORS(app)  # autorise React a appeler l'API
 
+@app.route("/api/status")
+def status():
+    return jsonify({
+        "status": "ok"
+    })
+
+# Configuration
+EXCEL_FILE = os.path.join(os.path.dirname(__file__), "bbdteste.xlsx")
+@app.route("/api/dataexcel")
+def dataexcel():
+    try:
+        # 1. Chargement
+        data = pd.read_excel(EXCEL_FILE, sheet_name="Feuil1")
+        
+        # 2. Valeurs "en brute" pour le test
+        ville_depart = "Paris"
+        ville_dest = "Lyon"
+
+        # 3. Filtrage forcé
+        result = data[
+            (data["depart"].astype(str) == ville_depart) & 
+            (data["destination"].astype(str) == ville_dest)
+        ]
+
+        # 4. Envoi
+        return jsonify({
+            "status": "success",
+            "depart": ville_depart, 
+            "destition": ville_dest,
+            "nombre_trouve": len(result),
+        })
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 
 @app.route("/api/hello")
 def hello():
@@ -71,6 +108,7 @@ def formulaire():
         "message": f"Donnees recues : {name}, {age}, {resultat_age}",
         "resultatAge": resultat_age
     })
+
 
 
 if __name__ == "__main__":

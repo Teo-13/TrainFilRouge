@@ -1,3 +1,7 @@
+:root {
+  --blue: rgb(0, 119, 255);
+}
+
 footer {
     background-color: #333;
     color: white;
