@@ -1,30 +1,27 @@
-import time
-import random
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
 
-machineJoueur = random.randint(1,100)
-compteur = 0
+def villesDistance(villeD, villeA) :
+    geolocator = Nominatim(user_agent="mon_application_voyage")
+    
+    loc1 = geolocator.geocode(villeD)
+    loc2 = geolocator.geocode(villeA)
+    
+    if loc1 and loc2 :
+        coord1 = (loc1.latitude, loc1.longitude)
+        coord2 = (loc2.latitude, loc2.longitude)
+        
+		#
+        distance = geodesic(coord1,coord2).kilometers
+        return round(distance, 2)
+    else:
+           return None
 
-while True:
-	
-	JoueurNombre = int(input("quelle est votre nombre ? De 1 à 100 : "))
-	compteur += 1
-	
-	if JoueurNombre >= 101 or JoueurNombre <= -1 :
-		print(f"Erreur : nombre incorrecte {JoueurNombre}")
-		
-		continue
-		
-	if machineJoueur > JoueurNombre :
-		print("C'est plus grand ")
-		continue
-	elif machineJoueur < JoueurNombre :
-		print("C'est plus petit ")
-		continue
-	else:
-		break
+    
 
-	
-   
+villeDepart = input("Ville départ ?")
+villeArrivee = input("Ville arrivée ?")
 
-print(f"Bravo ! Vous avez gané ! Le nombre était {machineJoueur} et vous avez trouvé en {time.time()} secondes !")
-print("Nombre d essais : ", compteur)
+distance = villesDistance(villeDepart,villeArrivee)
+
+print(f'distance à vole d\'oiseau et : {distance}')
