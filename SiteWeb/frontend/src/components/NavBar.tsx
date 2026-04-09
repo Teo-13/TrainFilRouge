@@ -47,6 +47,10 @@ const NavBar = () => {
                     Contact
                 </Link>
 
+                <Link to="/jsypa">
+                    jsypa
+                </Link>
+
                 <Link to="/apropos">
                     A propos
                     

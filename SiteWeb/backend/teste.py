@@ -6,7 +6,10 @@ def villesDistance(villeD, villeA) :
     
     loc1 = geolocator.geocode(villeD)
     loc2 = geolocator.geocode(villeA)
-    
+
+    loc1teste = geolocator.geocode("Paris")
+    print(f'paris = {loc1teste.address}')
+
     if loc1 and loc2 :
         coord1 = (loc1.latitude, loc1.longitude)
         coord2 = (loc2.latitude, loc2.longitude)
@@ -24,4 +27,4 @@ villeArrivee = input("Ville arrivée ?")
 
 distance = villesDistance(villeDepart,villeArrivee)
 
-print(f'distance à vole d\'oiseau et : {distance}')
+print(f'distance à vole d\'oiseau et : {distance} km')
