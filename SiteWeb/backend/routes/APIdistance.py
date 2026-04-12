@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, request, requests
+from flask import Blueprint, jsonify, request
+import requests
 from flask_cors import cross_origin
 
 from geopy.geocoders import Nominatim
@@ -64,23 +65,30 @@ def distance():
     data = request.json or {}
     villeDepart = data.get("villeDepart", "")
     villeArrivee = data.get("villeArrivee", "")
+    temps = data.get("temps", "non")
+    prix = data.get("prix", "non")
+    emission_co2 = data.get("EmissionCo2", "non")
     
 
     print(f'Ville de départ : {villeDepart} et ville d\'arrivée : {villeArrivee}')
+    print(f'Options - Rapide: {temps}, Moins cher: {prix}, Eco: {emission_co2}')
 
     if not villeDepart or not villeArrivee:
+         print("Veuillez fournir les deux villes.")
          return jsonify({"error": "Veuillez fournir les deux villes."}), 400
 
     # ===== calcule de la distance à vole d'oiseau ====
     distance_oiseau, addressDepart, addressArrivee = DistanceVilleOiseau(villeDepart, villeArrivee)
 
     if (distance_oiseau is None):
+            print("Impossible de calculer la distance pour oiseau.")
             return jsonify({"error": "Impossible de calculer la distance. Vérifiez les noms des villes."}), 400
     
     # ===== calcule de la distance sur route ====
     distance_route = DistanceVilleRoute(villeDepart, villeArrivee)
     
     if (distance_route is None) :
+         print("Impossible de calculer la distance pour route.")
          return jsonify({"error": "Impossible de calculer la distance. Vérifiez les noms des villes."}), 400
 
     print(f'la distance à vole d\'oiseau entre les deux ville est de {distance_oiseau} km. \n {addressDepart} -> {addressArrivee}')
