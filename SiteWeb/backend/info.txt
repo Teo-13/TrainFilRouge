@@ -1,0 +1,38 @@
+Pour vérifier cela avec la bibliothèque geopy, tu ne dois pas regarder uniquement le texte que tu vois dans le print, mais accéder aux détails de l'adresse que l'API renvoie (ce qu'on appelle le dictionnaire raw).
+
+Voici la démarche logique :
+
+1. Utiliser le paramètre addressdetails=True
+Par défaut, geocode renvoie une chaîne de caractères simple. Pour avoir le détail "France métropolitaine", il faut demander à l'API de séparer chaque composant de l'adresse (ville, département, région, pays).
+
+2. Le raisonnement pour la vérification
+Une fois que tu as les détails :
+
+Tu vérifies si la clé country est égale à "France".
+
+Tu vérifies si le texte "France métropolitaine" apparaît quelque part dans l'adresse complète ou dans le champ spécifique de l'adresse.
+
+3. Exemple de logique (sans code complexe)
+Imagine que l'objet renvoyé par le géocodage est comme une fiche d'identité. Pour "Ajaccio", la fiche contient :
+
+Ville : Ajaccio
+
+Région : Corse
+
+Sous-partie du pays : France métropolitaine
+
+Pays : France
+
+Ta condition de vérification sera : > "Si le résultat n'est pas vide ET que le mot 'France métropolitaine' est présent dans le texte de l'adresse, alors j'accepte le trajet."
+
+4. Pourquoi c'est important pour ton histoire ?
+En faisant cette vérification, tu protèges ton application. Si quelqu'un cherche "Nouméa", ton script verra : "Nouvelle-Calédonie, France". Comme il n'y a pas écrit "France métropolitaine", ton site pourra répondre :
+
+"Oups ! Ce trajet nécessite de traverser les océans. Mon comparateur se concentre sur les rails et les routes de France métropolitaine pour l'instant !"
+
+5. L'astuce pour être plus précis
+Si tu veux être encore plus rigoureux, tu peux vérifier le code pays et le code postal (postcode) dans les détails de l'adresse :
+
+Si country_code est "fr" et que le postcode ne commence pas par "97" ou "98", alors c'est gagné, tu es en métropole.
+
+Est-ce que tu veux que je t'explique comment structurer ton message d'erreur sur ton site React quand la ville n'est pas en France métropolitaine ?

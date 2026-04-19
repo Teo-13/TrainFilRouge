@@ -17,6 +17,16 @@ const About = () => {
     return (
         <div>
             <p>coucou : {status}</p>
+            <div>
+                <div>
+                    <h1>Data set 1 : </h1>
+                    <p>Data set sur tous les ville de France avec cordonnées GPS</p>
+                    <p>https://www.data.gouv.fr/datasets/communes-et-villes-de-france-en-csv-excel-json-parquet-et-feather</p>
+                </div>
+                <div>
+                    <h1>Data set 2 : </h1>
+                </div>
+            </div>
         </div>
     );
 };

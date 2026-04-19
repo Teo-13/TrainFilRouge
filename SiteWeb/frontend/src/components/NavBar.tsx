@@ -43,19 +43,23 @@ const NavBar = () => {
                     Accueil
                 </Link>
 
-                <Link to="/contact">
-                    Contact
+                <Link to="/jsypa">
+                    Quel trajet
                 </Link>
 
-                <Link to="/jsypa">
-                    jsypa
+                <Link to="/contact">
+                    Quoi faire
+                </Link>
+
+                <Link to="/transport">
+                    Transport
                 </Link>
 
                 <Link to="/apropos">
                     A propos
-                    
                 </Link>
                 
+                {/* check backend */}
                 <div style={{background: color}} className="cercle"></div>
 
             </div>

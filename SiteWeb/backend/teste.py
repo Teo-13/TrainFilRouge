@@ -7,8 +7,14 @@ def villesDistance(villeD, villeA) :
     loc1 = geolocator.geocode(villeD)
     loc2 = geolocator.geocode(villeA)
 
-    loc1teste = geolocator.geocode("Paris")
-    print(f'paris = {loc1teste.address}')
+    
+    loc1teste = geolocator.geocode("Las Vegas")
+    print(f'Las Vegas = {loc1teste}')
+    loc1teste2 = geolocator.geocode("Aix en provence")
+    print(f'Aix = {loc1teste2}')
+    code  = loc2.country_code
+    print(f'{villeD} ville 1 = {loc1}')
+    print(f'{villeA} ville 2 = {code}')
 
     if loc1 and loc2 :
         coord1 = (loc1.latitude, loc1.longitude)

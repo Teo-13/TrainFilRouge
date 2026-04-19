@@ -6,7 +6,9 @@ import FooterBar from "./components/FooterBar.tsx";
 import Home from "./routes/Home";
 import Contact from "./routes/Contact";
 import About from "./routes/About";
-import Jsypa from "./routes/jsypa";
+import Jsypa from "./routes/jsypa.tsx";
+import Transport from "./routes/transport.tsx";
+
 
 function App() {
 
@@ -19,6 +21,7 @@ function App() {
         <Route path="/contact" element={<Contact/>}/>
         <Route path="/apropos" element={<About/>}/>
         <Route path="/jsypa" element={<Jsypa/>}/>
+        <Route path="/transport" element={<Transport/>}/>
       </Routes>
 
       <footer>

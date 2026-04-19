@@ -63,8 +63,8 @@ def distance():
         return '', 200
     # ===== récupération des données du formualire ====
     data = request.json or {}
-    villeDepart = data.get("villeDepart", "")
-    villeArrivee = data.get("villeArrivee", "")
+    villeDepart = data.get("villeDepart", "").strip() 
+    villeArrivee = data.get("villeArrivee", "").strip() 
     temps = data.get("temps", "non")
     prix = data.get("prix", "non")
     emission_co2 = data.get("EmissionCo2", "non")
@@ -73,9 +73,12 @@ def distance():
     print(f'Ville de départ : {villeDepart} et ville d\'arrivée : {villeArrivee}')
     print(f'Options - Rapide: {temps}, Moins cher: {prix}, Eco: {emission_co2}')
 
+    # === Vérification des valeurs =====
     if not villeDepart or not villeArrivee:
          print("Veuillez fournir les deux villes.")
          return jsonify({"error": "Veuillez fournir les deux villes."}), 400
+    
+
 
     # ===== calcule de la distance à vole d'oiseau ====
     distance_oiseau, addressDepart, addressArrivee = DistanceVilleOiseau(villeDepart, villeArrivee)

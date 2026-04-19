@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./jsypa.css";
 
-const Jsypa = () => {
+const jsypa = () => {
     const [villeDepart, setVilleDepart] = useState("");
     const [villeArrivee, setVilleArrivee] = useState("");
     const [temps, setTemps] = useState("");
@@ -45,7 +45,7 @@ const Jsypa = () => {
 
 
     return (
-        <div className="jsypa-container">
+        <div className="transport-container">
             <section className="hero-search">
                 <h1>Calculez votre itinéraire</h1>
                 <div className="formulaire-card">
@@ -80,37 +80,38 @@ const Jsypa = () => {
             </section>
 
             <section className="listeTransports">
-                    <div className="info-trajet">
-                        <h2>Récapitulatif de votre recherche</h2>
-                        <label>
-                            <strong>Départ :</strong> {villeDepart || "..."} 
-                            <span className="arrow"> → </span> 
-                            <strong>Arrivée :</strong> {villeArrivee || "..."}
-                        </label>
+                <div className="info-trajet">
+                    <h2>Récapitulatif de votre recherche</h2>
+                    <label>
+                        <strong>Départ :</strong> {villeDepart || "..."} 
+                        <span className="arrow"> → </span> 
+                        <strong>Arrivée :</strong> {villeArrivee || "..."}
+                    </label>
+                </div>
+
+                <div className="liste">
+                    <div className="bloc train">
+                        <div className="icon">🚄</div>
+                        <h3>Train</h3>
+                        <p>Le choix le plus écologique.</p>
                     </div>
 
-                    <div className="liste">
-                        <div className="bloc train">
-                            <div className="icon">🚄</div>
-                            <h3>Train</h3>
-                            <p>Le choix le plus écologique.</p>
-                        </div>
-
-                        <div className="bloc voiture">
-                            <div className="icon">🚗</div>
-                            <h3>Voiture</h3>
-                            <p>Pour plus de liberté.</p>
-                        </div>
-
-                        <div className="bloc avion">
-                            <div className="icon">✈️</div>
-                            <h3>Avion</h3>
-                            <p>Le plus rapide sur longue distance.</p>
-                        </div>
+                    <div className="bloc voiture">
+                        <div className="icon">🚗</div>
+                        <h3>Voiture</h3>
+                        <p>Pour plus de liberté.</p>
                     </div>
+
+                    <div className="bloc avion">
+                        <div className="icon">✈️</div>
+                        <h3>Avion</h3>
+                        <p>Le plus rapide sur longue distance.</p>
+                    </div>
+                </div>
+
             </section>
         </div>
     );
 };
 
-export default Jsypa;
+export default jsypa;
