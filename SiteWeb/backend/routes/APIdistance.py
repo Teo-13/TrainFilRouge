@@ -54,6 +54,14 @@ def DistanceVilleRoute(villeD, villeA) :
         return None
 
 
+def Voiture():
+     return
+
+
+
+
+
+
 distance_bp = Blueprint('distance', __name__)
 
 @distance_bp.route('/', methods=['POST', 'OPTIONS'])

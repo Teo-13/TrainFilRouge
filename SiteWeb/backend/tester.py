@@ -1,79 +1,29 @@
 import requests
-import sqlite3
-import pandas as pd
 
-# ─────────────────────────────────────────────
-# 1. Récupération des données depuis l'API
-# ─────────────────────────────────────────────
+def compare_transport(distance_km):
+    # On interroge l'API pour une distance donnée
+    url = f"https://impactco2.fr/api/v1/transport?km={distance_km}"
+    
+    try:
+        response = requests.get(url)
+        data = response.json()
+        
+        # On filtre les transports qui nous intéressent
+        results = data['data']
+        relevant_ids = [1, 2, 4, 5] # 1: Avion, 2: train, 4: Voiture (Thermique), 5: TGV
+        
+        print(f"--- Comparaison pour {distance_km} km ---")
+        for item in results:
+            if item['id'] in relevant_ids:
+                name = item['name']
+                emissions = item['value'] # en kgCO2e
+                print(f"{name} : {emissions:.2f} kgCO2e")
+                
+    except Exception as e:
+        print(f"Erreur lors de la récupération : {e}")
 
-url = "https://geo.api.gouv.fr/communes?fields=nom,code,codeDepartement,codeRegion,population,centre"
-response = requests.get(url)
 
-if response.status_code != 200:
-    raise Exception("Erreur API")
+distance = float(input("Quelles est la distance en km ?"))
 
-data = response.json()
+compare_transport(distance)
 
-# ─────────────────────────────────────────────
-# 2. Transformation des données
-# ─────────────────────────────────────────────
-
-# Extraire latitude / longitude du champ "centre"
-for commune in data:
-    if commune.get("centre"):
-        commune["latitude"] = commune["centre"]["coordinates"][1]
-        commune["longitude"] = commune["centre"]["coordinates"][0]
-    else:
-        commune["latitude"] = None
-        commune["longitude"] = None
-
-# Conversion en DataFrame
-df = pd.DataFrame(data)
-
-# Supprimer la colonne "centre" (inutile maintenant)
-df = df.drop(columns=["centre"], errors="ignore")
-
-# ─────────────────────────────────────────────
-# 3. Création de la base SQLite
-# ─────────────────────────────────────────────
-
-conn = sqlite3.connect("communes.db")
-cursor = conn.cursor()
-
-# Création de la table
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS communes (
-    code TEXT PRIMARY KEY,
-    nom TEXT,
-    code_departement TEXT,
-    code_region TEXT,
-    population INTEGER,
-    latitude REAL,
-    longitude REAL
-)
-""")
-
-# ─────────────────────────────────────────────
-# 4. Insertion des données
-# ─────────────────────────────────────────────
-
-for _, row in df.iterrows():
-    cursor.execute("""
-    INSERT OR REPLACE INTO communes (
-        code, nom, code_departement, code_region, population, latitude, longitude
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (
-        row["code"],
-        row["nom"],
-        row["codeDepartement"],
-        row["codeRegion"],
-        row.get("population"),
-        row.get("latitude"),
-        row.get("longitude")
-    ))
-
-# Sauvegarde
-conn.commit()
-conn.close()
-
-print("✅ Données insérées dans communes.db")
