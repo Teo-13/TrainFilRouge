@@ -1,62 +1,99 @@
-from flask import Blueprint, jsonify, request
 import requests
-from flask_cors import cross_origin
-
 from geopy.geocoders import Nominatim
-from geopy.distance import geodesic
 
 # ===== fonction calcule coordonnées ville ====
 def CoodonnesVille(Ville):
     geolocator = Nominatim(user_agent="mon_application_voyage")
-
-    Loc = geolocator.geocode(Ville)
-
-    if Loc :
-        coord = (Loc.latitude, Loc.longitude)
-        return coord
-    else :
+    try:
+        Loc = geolocator.geocode(Ville)
+        if Loc:
+            return (Loc.latitude, Loc.longitude)
         return None
+    except Exception:
+        return None
+
+# ===== fonction calcul émision C02 transport =========
+def impactCO2transport(distance_km, transport):
+    # Dictionnaires des IDs correspondants à l'API ImpactCO2
+    mapping = {
+        'voiture': 4, # Voiture thermique
+        'avion': 1,   # Avion long courrier
+        'train': 2    # Train (Intercités/Moyen)
+    }
     
-def impactCO2transport(distance_km, transport) :
-    if transport == 'voiture' :
-        relevant_ids = [4] # 4 voiture thermique
-    elif transport == 'avion' or 'train' :
-        relevant_ids = [1 , 2, 5] # 1 avion, 2 train, 5 TGV
-    else:
-        print(f"Erreur, dans de types de transport entrée : {transport}")
-    return
+    target_id = mapping.get(transport)
+    url = f"https://impactco2.fr/api/v1/transport?km={distance_km}"
     
+    name, emissions = "Inconnu", 0
+
+    try:
+        response = requests.get(url)
+        data = response.json()
+        results = data.get('data', [])
+
+        for item in results:
+            if item['id'] == target_id:
+                name = item['name']
+                emissions = item['value']
+                break # On a trouvé, on arrête la boucle
+            
+    except Exception as e:
+        print(f"Erreur API ImpactCO2 : {e}")
+
+    return name, emissions
+
+# ======= Calcule partie voiture =========
 def donneeVoiture(villeD, villeA):
+    print("--- Début du calcul ---")
+    
+    # Récupération des coordonnées
+    coordA = CoodonnesVille(villeD)
+    coordB = CoodonnesVille(villeA)
 
-    # =========== calculle distance voiture
-    CoordVilleA = CoodonnesVille(villeA)
-    lat, lon = CoordVilleA
-    lat_villeA = lat 
-    lon_villeA = lon
+    if not coordA or not coordB:
+        print("Erreur : Impossible de trouver l'une des villes.")
+        return "Inconnu", 0, 0, 0
 
-    CoordVilleB = CoodonnesVille(villeD)
-    lat, lon = CoordVilleB
-    lat_villeB = lat
-    lon_villeB = lon
+    # OSRM : Format {lon},{lat};{lon},{lat}
+    url = f"http://router.project-osrm.org/route/v1/driving/{coordA[1]},{coordA[0]};{coordB[1]},{coordB[0]}?overview=false"
 
-    url = f"http://router.project-osrm.org/route/v1/driving/{lat_villeA},{lon_villeA};{lat_villeB},{lon_villeB}?overview=false"
+    distance_km = 0
+    temps_minutes = 0
+    distance_metres = 0
 
-    try :
+    try:
         res = requests.get(url)
         data = res.json()
 
-        if data['code'] == 'ok' :
+        if data['code'] == 'Ok':
             distance_metres = data['routes'][0]['distance']
-            distance_km = distance_metres / 100
+            distance_km = distance_metres / 1000 # Conversion KM
+            
+            temps_secondes = data['routes'][0]['duration']
+            temps_minutes = round(temps_secondes / 60)
+            temps_heures = round(temps_minutes / 60)
+            print(f"Distance : {distance_km:.2f} km | Temps : {temps_heures} min")
+        else:
+            print("OSRM n'a pas pu calculer l'itinéraire.")
 
-    except Exception as e :
-        print(f"Erreur losr de la récupération de la distance sur route : {e} ")
+    except Exception as e:
+        print(f"Erreur OSRM : {e}")
 
-    # =========== calculle co2 voiture
+    # Calcul CO2 seulement si on a une distance
+    name, emissions = "Inconnu", 0
+    if distance_km > 0:
+        name, emissions = impactCO2transport(distance_km, "voiture")
 
-    return
+    return name, emissions, temps_heures, distance_km
 
+# --- Exécution ---
+villeD = input("Départ ? ")
+villeA = input("Arrivée ? ")
 
-test = CoodonnesVille("Paris")
-lat, lon  = test
-print(f"Latitude : {lat}, Longitude : {lon}")
+name, emissions, temps_heures, distance_km = donneeVoiture(villeD, villeA)
+
+print("\n--- RÉSULTATS ---")
+print(f"Transport : {name}")
+print(f"Émissions : {emissions} kgCO2e")
+print(f"Temps : {temps_heures} heures")
+print(f"Distance : {distance_km:.2f} mètres")
