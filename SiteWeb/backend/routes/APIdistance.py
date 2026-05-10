@@ -36,7 +36,7 @@ def distance():
     voitureName, voitureEmissions, voitureTemps_heures, voitureDistance_km, voiturePrix = donneeVoiture(villeDepart,villeArrivee)
     
     # ===== Calcule avion =======
-
+    
 
     # ===== Calcule train =======
 

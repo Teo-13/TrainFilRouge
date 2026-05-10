@@ -1,4 +1,4 @@
-export function initSlider(rootElement) {
+export function initSlider(rootElement: HTMLElement | null): () => void {
   if (!rootElement) return () => {};
 
   const slider = rootElement.querySelector("#slider");

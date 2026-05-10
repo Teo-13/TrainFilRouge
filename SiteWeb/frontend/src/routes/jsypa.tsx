@@ -106,6 +106,7 @@ const jsypa = () => {
                 </div>
 
                 <div className="liste">
+                    {/* ============= Partie Train ==============*/}
                     <article className="train-card">
                         <h3 className="train-card__title">Train</h3>
 
@@ -118,7 +119,7 @@ const jsypa = () => {
                         <div className="train-card__metrics">
                             <div className="train-metric">
                                 <span className="train-metric__icon" title="Temps">
-                                    🚀
+                                    ⌛
                                 </span>
                                 <div className="train-metric__track train-metric__track--time">
                                     <div
@@ -170,6 +171,7 @@ const jsypa = () => {
                         </div>
                     </article>
 
+                    {/* ============= Partie Voiture ==============*/}
                     <div className="bloc voiture">
                         <div className="icon">🚗</div>
                         <h3>Voiture</h3>
@@ -180,6 +182,7 @@ const jsypa = () => {
                         <p>Emisions : {voitureEmissions}</p>
                     </div>
 
+                    {/* ============= Partie Avion ==============*/}
                     <div className="bloc avion">
                         <div className="icon">✈️</div>
                         <h3>Avion</h3>
