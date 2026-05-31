@@ -6,6 +6,7 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 
 from utils.voiture import donneeVoiture
+from utils.train import donneeTrain
 
 
 distance_bp = Blueprint('distance', __name__)
@@ -39,7 +40,7 @@ def distance():
     
 
     # ===== Calcule train =======
-
+    trainData = donneeTrain(villeDepart, villeArrivee)
     
 
     # =====================
@@ -54,9 +55,24 @@ def distance():
 
     return jsonify({
         "status": "success",
+        # ====== donner voiture ========
         "voitureName": voitureName,
         "voitureEmissions": voitureEmissions,
         "voitureTemps_heures": voitureTemps_heures,
         "voitureDistance_km": voitureDistance_km,
         "voiturePrix": voiturePrix,
+        # ======= donner train =========
+        "trainName": trainData["trainName"],
+        "trainEmissions": trainData["trainEmissions"],
+        "trainTemps_minutes": trainData["trainTemps_minutes"],
+        "trainTemps": trainData["trainTemps"],
+        "trainDistance_km": trainData["trainDistance_km"],
+        "trainPrix": trainData["trainPrix"],
+        "trainPrixSource": trainData["trainPrixSource"],
+        "trainGareDepart": trainData["trainGareDepart"],
+        "trainGareArrivee": trainData["trainGareArrivee"],
+        "trainDepart": trainData["trainDepart"],
+        "trainArrivee": trainData["trainArrivee"],
+        "trainLignes": trainData["trainLignes"],
+        "trainSource": trainData["trainSource"],
     })

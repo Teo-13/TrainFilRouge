@@ -13,6 +13,19 @@ const jsypa = () => {
     const [voitureTemps_heures, setVoitureTemps_heures] = useState("");
     const [voitureDistance_km, setVoitureDistance_km] = useState("");
     const [voiturePrix, setVoiturePrix] = useState("");
+    const [trainName, setTrainName] = useState("");
+    const [trainEmissions, setTrainEmissions] = useState("");
+    const [trainTemps_minutes, setTrainTemps_minutes] = useState("");
+    const [trainTemps, setTrainTemps] = useState("");
+    const [trainDistance_km, setTrainDistance_km] = useState("");
+    const [trainPrix, setTrainPrix] = useState("");
+    const [trainPrixSource, setTrainPrixSource] = useState("");
+    const [trainGareDepart, setTrainGareDepart] = useState("");
+    const [trainGareArrivee, setTrainGareArrivee] = useState("");
+    const [trainDepart, setTrainDepart] = useState("");
+    const [trainArrivee, setTrainArrivee] = useState("");
+    const [trainLignes, setTrainLignes] = useState("");
+    const [trainSource, setTrainSource] = useState("");
     
 
 
@@ -20,9 +33,6 @@ const jsypa = () => {
     const [formError, setFormError] = useState("");
 
     /** Scores affichés sur /5 pour les jauges train (à brancher sur l’API plus tard) */
-    const TRAIN_MAX = 5;
-    const [trainScores] = useState({ temps: 3.8, prix: 4.6, eco: 2.1 });
-
     const formulaireVille = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Empêche le rechargement de la page lors de la soumission du formulaire
         setFormError("");
@@ -54,6 +64,19 @@ const jsypa = () => {
             setVoitureTemps_heures(String(data.voitureTemps_heures ?? ""));
             setVoitureDistance_km(String(data.voitureDistance_km ?? ""));
             setVoiturePrix(String(data.voiturePrix ?? ""));
+            setTrainName(String(data.trainName ?? ""));
+            setTrainEmissions(String(data.trainEmissions ?? ""));
+            setTrainTemps_minutes(String(data.trainTemps_minutes ?? ""));
+            setTrainTemps(String(data.trainTemps ?? ""));
+            setTrainDistance_km(String(data.trainDistance_km ?? ""));
+            setTrainPrix(String(data.trainPrix ?? ""));
+            setTrainPrixSource(String(data.trainPrixSource ?? ""));
+            setTrainGareDepart(String(data.trainGareDepart ?? ""));
+            setTrainGareArrivee(String(data.trainGareArrivee ?? ""));
+            setTrainDepart(String(data.trainDepart ?? ""));
+            setTrainArrivee(String(data.trainArrivee ?? ""));
+            setTrainLignes(String(data.trainLignes ?? ""));
+            setTrainSource(String(data.trainSource ?? ""));
         } catch (err) {
         alert("Erreur : " + err);
         }
@@ -125,11 +148,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: `${Math.min(100, (trainScores.temps / TRAIN_MAX) * 100)}%`,
+                                            width: trainTemps_minutes ? "100%" : "0%",
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainScores.temps}</span>
+                                <span className="train-metric__value">{trainTemps || trainTemps_minutes || "..."}</span>
                             </div>
 
                             <div className="train-metric">
@@ -140,11 +163,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: `${Math.min(100, (trainScores.prix / TRAIN_MAX) * 100)}%`,
+                                            width: trainPrix ? "100%" : "0%",
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainScores.prix}</span>
+                                <span className="train-metric__value">{trainPrix || "..."}</span>
                             </div>
 
                             <div className="train-metric">
@@ -155,16 +178,27 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: `${Math.min(100, (trainScores.eco / TRAIN_MAX) * 100)}%`,
+                                            width: trainEmissions ? "100%" : "0%",
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainScores.eco}</span>
+                                <span className="train-metric__value">{trainEmissions || "..."}</span>
                             </div>
                         </div>
 
                         <div className="train-card__footer">
                             <p className="train-card__footer-label">Détails trajets</p>
+                            <p className="train-card__detail">Transport : {trainName || "..."}</p>
+                            <p className="train-card__detail">Gare de depart : {trainGareDepart || "..."}</p>
+                            <p className="train-card__detail">Gare d'arrivee : {trainGareArrivee || "..."}</p>
+                            <p className="train-card__detail">Depart : {trainDepart || "..."}</p>
+                            <p className="train-card__detail">Arrivee : {trainArrivee || "..."}</p>
+                            <p className="train-card__detail">Temps : {trainTemps || trainTemps_minutes || "..."}</p>
+                            <p className="train-card__detail">Distance : {trainDistance_km || "..."} km</p>
+                            <p className="train-card__detail">Prix : {trainPrix || "..."} euros ({trainPrixSource || "..."})</p>
+                            <p className="train-card__detail">Emissions : {trainEmissions || "..."} kgCO2e</p>
+                            <p className="train-card__detail">Lignes : {trainLignes || "..."}</p>
+                            <p className="train-card__detail">Source : {trainSource || "..."}</p>
                             <button type="button" className="train-card__more">
                                 En savoir plus
                             </button>
