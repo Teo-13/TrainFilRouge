@@ -202,23 +202,28 @@ const jsypa = () => {
                             </div>
                         </div>
 
-                        <div className="train-card__footer">
+                        <div className="trajetVoiture">
                             <p className="train-card__footer-label">Détails trajets</p>
-                            <p className="train-card__detail">Transport : {trainName || "..."}</p>
-                            <p className="train-card__detail">Gare de depart : {trainGareDepart || "..."}</p>
-                            <p className="train-card__detail">Gare d'arrivee : {trainGareArrivee || "..."}</p>
-                            <p className="train-card__detail">Depart : {trainDepart || "..."}</p>
-                            <p className="train-card__detail">Arrivee : {trainArrivee || "..."}</p>
-                            <p className="train-card__detail">Temps : {trainTemps || trainTemps_minutes || "..."}</p>
-                            <p className="train-card__detail">Distance : {trainDistance_km || "..."} km</p>
-                            <p className="train-card__detail">Prix : {trainPrix || "..."} euros ({trainPrixSource || "..."})</p>
-                            <p className="train-card__detail">Emissions : {trainEmissions || "..."} kgCO2e</p>
-                            <p className="train-card__detail">Lignes : {trainLignes || "..."}</p>
-                            <p className="train-card__detail">Source : {trainSource || "..."}</p>
-                            <button type="button" className="train-card__more">
-                                En savoir plus
-                            </button>
+
+                            <p>Ville de départ : {villeDepart || "..."}</p>
+                            <p>|</p>
+                            <p>Aeroport depart : {trainGareDepart || "..."}</p>
+                            <p>|</p>
+                            <p>|    temps : {trainTemps || "..."}</p>
+                            <p>|    prix : {trainPrix || "..."}</p>
+                            <p>|    Distances : {trainDistance_km || "..."}</p>
+                            <p>|    Emisions : {trainEmissions || "..."}</p>
+                            <p>|</p>
+                            <p>Aeroport arrivee : {trainGareArrivee || "..."}</p>
+                            <p>|</p>
+                            <p>Ville de départ : {villeArrivee || "..."}</p>
                         </div>
+
+                        
+                        <button type="button" className="train-card__footer">
+                            En savoir plus
+                        </button>
+                        
                     </article>
 
                     {/* ============= Partie Voiture ==============*/}
@@ -277,18 +282,26 @@ const jsypa = () => {
                                 <span className="train-metric__value">{trainEmissions || "..."}</span>
                             </div>
                         </div>
+                        
 
-                        <div className="train-card__footer">
+                        <div className="trajetVoiture">
                             <p className="train-card__footer-label">Détails trajets</p>
-                            <p>Pour plus de liberté.</p>
-                            <p>temps : {voitureTemps_heures}</p>
-                            <p>Distances : {voitureDistance_km}</p>
-                            <p>Prix en (€) : {voiturePrix}</p>
-                            <p>Emisions : {voitureEmissions}</p>
-                            <button type="button" className="train-card__more">
-                                En savoir plus
-                            </button>
+
+                            <p>Ville de départ : {villeDepart || "..."}</p>
+                            <p>|</p>
+                            <p>|    temps : {voitureTemps_heures || "..."}</p>
+                            <p>|    prix : {voiturePrix || "..."}</p>
+                            <p>|    Distances : {voitureDistance_km || "..."}</p>
+                            <p>|    Emisions : {voitureEmissions || "..."}</p>
+                            <p>|</p>
+                            <p>Ville de départ : {villeArrivee || "..."}</p>
                         </div>
+
+                        
+                        <button type="button" className="train-card__footer">
+                            En savoir plus
+                        </button>
+                        
                     </article>
 
 
@@ -349,21 +362,28 @@ const jsypa = () => {
                             </div>
                         </div>
 
-                        <div className="train-card__footer">
+                        <div className="trajetVoiture">
                             <p className="train-card__footer-label">Détails trajets</p>
-                            <p>Le plus rapide sur longue distance.</p>
-                            <p>Transport : {avionName || "..."}</p>
-                            <p>Temps : {avionTemps || "..."}</p>
-                            <p>Distance : {avionDistance_km || "..."} km</p>
-                            <p>Prix en (â‚¬) : {avionPrix || "..."}</p>
-                            <p>Emissions : {avionEmissions || "..."} kgCO2e</p>
+
+                            <p>Ville de départ : {villeDepart || "..."}</p>
+                            <p>|</p>
                             <p>Aeroport depart : {avionAeroportDepart || "..."}</p>
+                            <p>|</p>
+                            <p>|    temps : {avionTemps || "..."}</p>
+                            <p>|    prix : {avionPrix || "..."}</p>
+                            <p>|    Distances : {avionDistance_km || "..."}</p>
+                            <p>|    Emisions : {avionEmissions || "..."}</p>
+                            <p>|</p>
                             <p>Aeroport arrivee : {avionAeroportArrivee || "..."}</p>
-                            <p>Source : {avionSource || "..."}</p>
-                            <button type="button" className="train-card__more">
-                                En savoir plus
-                            </button>
+                            <p>|</p>
+                            <p>Ville de départ : {villeArrivee || "..."}</p>
                         </div>
+
+                        
+                        <button type="button" className="train-card__footer">
+                            En savoir plus
+                        </button>
+                        
                     </article>
 
                 </div>

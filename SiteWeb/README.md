@@ -25,7 +25,7 @@ python app.py
 API test:
 
 ```
-GET http://localhost:5000/api/health
+GET http://localhost:5001/api/health
 ```
 
 ### 3) Installer et lancer le front
