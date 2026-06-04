@@ -1,6 +1,50 @@
 import React, { useState } from "react";
 import "./jsypa.css";
 
+type ScoreTransport = {
+    global: string;
+    temps: string;
+    prix: string;
+    emission: string;
+};
+
+// Ligne du classement renvoyee par le backend apres application des preferences.
+type ClassementTransport = {
+    transport: string;
+    label: string;
+    score: number;
+    scoreTemps: number;
+    scorePrix: number;
+    scoreEmission: number;
+};
+
+const scoreVide: ScoreTransport = {
+    global: "",
+    temps: "",
+    prix: "",
+    emission: "",
+};
+
+// Convertit un score /100 en largeur CSS pour les barres temps/prix/emissions.
+const largeurScore = (score: string) => {
+    const valeur = Number(score);
+    if (!Number.isFinite(valeur)) {
+        return "0%";
+    }
+
+    return `${Math.max(0, Math.min(100, valeur))}%`;
+};
+
+// Affiche tous les scores de maniere uniforme dans l'interface.
+const formatScore = (score: string | number) => {
+    const valeur = Number(score);
+    if (!Number.isFinite(valeur)) {
+        return "...";
+    }
+
+    return `${Math.round(valeur)} / 100`;
+};
+
 const jsypa = () => {
     const [villeDepart, setVilleDepart] = useState("");
     const [villeArrivee, setVilleArrivee] = useState("");
@@ -11,8 +55,10 @@ const jsypa = () => {
     const [voitureName, setVoitureName] = useState("");
     const [voitureEmissions, setVoitureEmissions] = useState("");
     const [voitureTemps_heures, setVoitureTemps_heures] = useState("");
+    const [voitureTemps_minutes, setVoitureTemps_minutes] = useState("");
     const [voitureDistance_km, setVoitureDistance_km] = useState("");
     const [voiturePrix, setVoiturePrix] = useState("");
+    const [voitureScore, setVoitureScore] = useState<ScoreTransport>(scoreVide);
     const [trainName, setTrainName] = useState("");
     const [trainEmissions, setTrainEmissions] = useState("");
     const [trainTemps_minutes, setTrainTemps_minutes] = useState("");
@@ -26,14 +72,18 @@ const jsypa = () => {
     const [trainArrivee, setTrainArrivee] = useState("");
     const [trainLignes, setTrainLignes] = useState("");
     const [trainSource, setTrainSource] = useState("");
+    const [trainScore, setTrainScore] = useState<ScoreTransport>(scoreVide);
     const [avionName, setAvionName] = useState("");
     const [avionEmissions, setAvionEmissions] = useState("");
+    const [avionTemps_minutes, setAvionTemps_minutes] = useState("");
     const [avionTemps, setAvionTemps] = useState("");
     const [avionDistance_km, setAvionDistance_km] = useState("");
     const [avionPrix, setAvionPrix] = useState("");
     const [avionAeroportDepart, setAvionAeroportDepart] = useState("");
     const [avionAeroportArrivee, setAvionAeroportArrivee] = useState("");
     const [avionSource, setAvionSource] = useState("");
+    const [avionScore, setAvionScore] = useState<ScoreTransport>(scoreVide);
+    const [classementTransports, setClassementTransports] = useState<ClassementTransport[]>([]);
     
 
 
@@ -67,11 +117,22 @@ const jsypa = () => {
             }
             const data = await res.json();
 
+            // Classement global calcule par le backend selon les checkbox.
+            setClassementTransports(Array.isArray(data.classementTransports) ? data.classementTransports : []);
+
             setVoitureName(String(data.voitureName ?? ""));
             setVoitureEmissions(String(data.voitureEmissions ?? ""));
             setVoitureTemps_heures(String(data.voitureTemps_heures ?? ""));
+            setVoitureTemps_minutes(String(data.voitureTemps_minutes ?? ""));
             setVoitureDistance_km(String(data.voitureDistance_km ?? ""));
             setVoiturePrix(String(data.voiturePrix ?? ""));
+            // Scores separes pour les barres + score global de la voiture.
+            setVoitureScore({
+                global: String(data.voitureScore ?? ""),
+                temps: String(data.voitureScoreTemps ?? ""),
+                prix: String(data.voitureScorePrix ?? ""),
+                emission: String(data.voitureScoreEmission ?? ""),
+            });
             setTrainName(String(data.trainName ?? ""));
             setTrainEmissions(String(data.trainEmissions ?? ""));
             setTrainTemps_minutes(String(data.trainTemps_minutes ?? ""));
@@ -85,14 +146,29 @@ const jsypa = () => {
             setTrainArrivee(String(data.trainArrivee ?? ""));
             setTrainLignes(String(data.trainLignes ?? ""));
             setTrainSource(String(data.trainSource ?? ""));
+            // Scores separes pour les barres + score global du train.
+            setTrainScore({
+                global: String(data.trainScore ?? ""),
+                temps: String(data.trainScoreTemps ?? ""),
+                prix: String(data.trainScorePrix ?? ""),
+                emission: String(data.trainScoreEmission ?? ""),
+            });
             setAvionName(String(data.avionName ?? ""));
             setAvionEmissions(String(data.avionEmissions ?? ""));
+            setAvionTemps_minutes(String(data.avionTemps_minutes ?? ""));
             setAvionTemps(String(data.avionTemps ?? ""));
             setAvionDistance_km(String(data.avionDistance_km ?? ""));
             setAvionPrix(String(data.avionPrix ?? ""));
             setAvionAeroportDepart(String(data.avionAeroportDepart ?? ""));
             setAvionAeroportArrivee(String(data.avionAeroportArrivee ?? ""));
             setAvionSource(String(data.avionSource ?? ""));
+            // Scores separes pour les barres + score global de l'avion.
+            setAvionScore({
+                global: String(data.avionScore ?? ""),
+                temps: String(data.avionScoreTemps ?? ""),
+                prix: String(data.avionScorePrix ?? ""),
+                emission: String(data.avionScoreEmission ?? ""),
+            });
         } catch (err) {
         alert("Erreur : " + err);
         }
@@ -144,10 +220,31 @@ const jsypa = () => {
                     </label>
                 </div>
 
+                {classementTransports.length > 0 && (
+                    <div className="classement-transports">
+                        <h3>Classement selon vos preferences</h3>
+                        <div className="classement-transports__list">
+                            {classementTransports.map((transport, index) => (
+                                <div className="classement-transports__item" key={transport.transport}>
+                                    <span className="classement-transports__rank">{index + 1}</span>
+                                    <div className="classement-transports__content">
+                                        <strong>{transport.label}</strong>
+                                        <span>
+                                            Temps {formatScore(transport.scoreTemps)} | Prix {formatScore(transport.scorePrix)} | CO2 {formatScore(transport.scoreEmission)}
+                                        </span>
+                                    </div>
+                                    <span className="classement-transports__score">{formatScore(transport.score)}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 <div className="liste">
                     {/* ============= Partie Train ==============*/}
                     <article className="train-card">
                         <h3 className="train-card__title">Train</h3>
+                        <div className="score-badge">Score : {formatScore(trainScore.global)}</div>
 
                         <div className="train-card__image" aria-hidden>
                             <div className="train-card__image-inner">
@@ -156,6 +253,7 @@ const jsypa = () => {
                         </div>
 
                         <div className="train-card__metrics">
+                            {/* ====== partie scroring =======*/}
                             <div className="train-metric">
                                 <span className="train-metric__icon" title="Temps">
                                     ⌛
@@ -164,11 +262,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainTemps_minutes ? "100%" : "0%",
+                                            width: largeurScore(trainScore.temps),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainTemps || trainTemps_minutes || "..."}</span>
+                                <span className="train-metric__value">{formatScore(trainScore.temps)}</span>
                             </div>
 
                             <div className="train-metric">
@@ -179,11 +277,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainPrix ? "100%" : "0%",
+                                            width: largeurScore(trainScore.prix),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainPrix || "..."}</span>
+                                <span className="train-metric__value">{formatScore(trainScore.prix)}</span>
                             </div>
 
                             <div className="train-metric">
@@ -194,11 +292,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainEmissions ? "100%" : "0%",
+                                            width: largeurScore(trainScore.emission),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainEmissions || "..."}</span>
+                                <span className="train-metric__value">{formatScore(trainScore.emission)}</span>
                             </div>
                         </div>
 
@@ -229,6 +327,7 @@ const jsypa = () => {
                     {/* ============= Partie Voiture ==============*/}
                     <article className="train-card">
                         <h3 className="train-card__title">Voiture</h3>
+                        <div className="score-badge">Score : {formatScore(voitureScore.global)}</div>
 
                         <div className="train-card__image" aria-hidden>
                             <div className="train-card__image-inner">
@@ -237,6 +336,7 @@ const jsypa = () => {
                         </div>
 
                         <div className="train-card__metrics">
+                            {/* ====== partie scroring =======*/}
                             <div className="train-metric">
                                 <span className="train-metric__icon" title="Temps">
                                     ⌛
@@ -245,11 +345,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainTemps_minutes ? "100%" : "0%",
+                                            width: largeurScore(voitureScore.temps),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainTemps || trainTemps_minutes || "..."}</span>
+                                <span className="train-metric__value">{formatScore(voitureScore.temps)}</span>
                             </div>
 
                             <div className="train-metric">
@@ -260,11 +360,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainPrix ? "100%" : "0%",
+                                            width: largeurScore(voitureScore.prix),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainPrix || "..."}</span>
+                                <span className="train-metric__value">{formatScore(voitureScore.prix)}</span>
                             </div>
 
                             <div className="train-metric">
@@ -275,11 +375,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainEmissions ? "100%" : "0%",
+                                            width: largeurScore(voitureScore.emission),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainEmissions || "..."}</span>
+                                <span className="train-metric__value">{formatScore(voitureScore.emission)}</span>
                             </div>
                         </div>
                         
@@ -308,6 +408,7 @@ const jsypa = () => {
                     {/* ============= Partie Avion ==============*/}
                     <article className="train-card">
                         <h3 className="train-card__title">Avion</h3>
+                        <div className="score-badge">Score : {formatScore(avionScore.global)}</div>
 
                         <div className="train-card__image" aria-hidden>
                             <div className="train-card__image-inner">
@@ -316,6 +417,7 @@ const jsypa = () => {
                         </div>
 
                         <div className="train-card__metrics">
+                            {/* ====== partie scroring =======*/}
                             <div className="train-metric">
                                 <span className="train-metric__icon" title="Temps">
                                     ⌛
@@ -324,11 +426,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainTemps_minutes ? "100%" : "0%",
+                                            width: largeurScore(avionScore.temps),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainTemps || trainTemps_minutes || "..."}</span>
+                                <span className="train-metric__value">{formatScore(avionScore.temps)}</span>
                             </div>
 
                             <div className="train-metric">
@@ -339,11 +441,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainPrix ? "100%" : "0%",
+                                            width: largeurScore(avionScore.prix),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainPrix || "..."}</span>
+                                <span className="train-metric__value">{formatScore(avionScore.prix)}</span>
                             </div>
 
                             <div className="train-metric">
@@ -354,11 +456,11 @@ const jsypa = () => {
                                     <div
                                         className="train-metric__fill"
                                         style={{
-                                            width: trainEmissions ? "100%" : "0%",
+                                            width: largeurScore(avionScore.emission),
                                         }}
                                     />
                                 </div>
-                                <span className="train-metric__value">{trainEmissions || "..."}</span>
+                                <span className="train-metric__value">{formatScore(avionScore.emission)}</span>
                             </div>
                         </div>
 

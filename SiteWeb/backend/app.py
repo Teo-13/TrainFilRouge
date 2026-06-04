@@ -4,12 +4,14 @@ import pandas as pd
 import os
 
 from routes.APIdistance import distance_bp
+from routes.APIemissionDistance import emsissionDistance_bp
 
 app = Flask(__name__)
 CORS(app)  # autorise React a appeler l'API
 
 # ==== import des routes ====
 app.register_blueprint(distance_bp, url_prefix='/api/distance')
+app.register_blueprint(emsissionDistance_bp, url_prefix='/api/emissions')
 
 
 

@@ -19,7 +19,7 @@ def donneeVoiture(villeD, villeA):
 
     if not coordA or not coordB:
         print("Erreur : Impossible de trouver l'une des villes.")
-        return "Inconnu", 0, 0, 0, 0
+        return "Inconnu", 0, 0, 0, 0, 0
 
     # OSRM : Format {lon},{lat};{lon},{lat}
     url = f"http://router.project-osrm.org/route/v1/driving/{coordA[1]},{coordA[0]};{coordB[1]},{coordB[0]}?overview=false"
@@ -78,4 +78,4 @@ def donneeVoiture(villeD, villeA):
 
 
 
-    return name, emissions, temps_heures, round(distance_km, 2), round(total, 2)
+    return name, emissions, temps_heures, temps_minutes, round(distance_km, 2), round(total, 2)
