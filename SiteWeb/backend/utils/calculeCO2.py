@@ -20,7 +20,7 @@ def impactCO2transport(distance_km, transport):
     name, emissions = "Inconnu", 0
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=12)
         data = response.json()
         results = data.get('data', [])
 

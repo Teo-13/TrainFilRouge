@@ -30,7 +30,7 @@ def donneeVoiture(villeD, villeA):
     distance_metres = 0
 
     try:
-        res = requests.get(url)
+        res = requests.get(url, timeout=12)
         data = res.json()
 
         if data['code'] == 'Ok':

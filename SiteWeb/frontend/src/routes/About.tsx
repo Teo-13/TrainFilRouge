@@ -7,7 +7,7 @@ const About = () => {
     const [nombre_trouve, setNombre_trouve] = useState("");
 
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/api/dataexcel")
+        fetch("/api/dataexcel")
             .then((res) => res.json())
             .then((resJson) => {
                 setStatus(resJson.status)

@@ -42,4 +42,4 @@ npm install react-router-dom
 npm run dev
 ```
 
-Le front tourne sur http://localhost:5173 et proxy vers le back sur /api.
+Le front tourne sur http://localhost:5174 et proxy vers le back sur /api.

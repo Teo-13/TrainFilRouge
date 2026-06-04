@@ -7,6 +7,7 @@ from geopy.distance import geodesic
 
 from utils.voiture import donneeVoiture
 from utils.train import donneeTrain
+from utils.avion import donneeAvion
 
 
 distance_bp = Blueprint('distance', __name__)
@@ -37,7 +38,7 @@ def distance():
     voitureName, voitureEmissions, voitureTemps_heures, voitureDistance_km, voiturePrix = donneeVoiture(villeDepart,villeArrivee)
     
     # ===== Calcule avion =======
-    
+    avionData = donneeAvion(villeDepart, villeArrivee)
 
     # ===== Calcule train =======
     trainData = donneeTrain(villeDepart, villeArrivee)
@@ -61,6 +62,16 @@ def distance():
         "voitureTemps_heures": voitureTemps_heures,
         "voitureDistance_km": voitureDistance_km,
         "voiturePrix": voiturePrix,
+        # ======= donner avion =========
+        "avionName": avionData["avionName"],
+        "avionEmissions": avionData["avionEmissions"],
+        "avionTemps": avionData["avionTemps"],
+        "avionTemps_minutes": avionData["avionTemps_minutes"],
+        "avionDistance_km": avionData["avionDistance_km"],
+        "avionPrix": avionData["avionPrix"],
+        "avionAeroportDepart": avionData["avionAeroportDepart"],
+        "avionAeroportArrivee": avionData["avionAeroportArrivee"],
+        "avionSource": avionData["avionSource"],
         # ======= donner train =========
         "trainName": trainData["trainName"],
         "trainEmissions": trainData["trainEmissions"],

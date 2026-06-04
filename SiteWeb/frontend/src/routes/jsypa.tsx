@@ -26,6 +26,14 @@ const jsypa = () => {
     const [trainArrivee, setTrainArrivee] = useState("");
     const [trainLignes, setTrainLignes] = useState("");
     const [trainSource, setTrainSource] = useState("");
+    const [avionName, setAvionName] = useState("");
+    const [avionEmissions, setAvionEmissions] = useState("");
+    const [avionTemps, setAvionTemps] = useState("");
+    const [avionDistance_km, setAvionDistance_km] = useState("");
+    const [avionPrix, setAvionPrix] = useState("");
+    const [avionAeroportDepart, setAvionAeroportDepart] = useState("");
+    const [avionAeroportArrivee, setAvionAeroportArrivee] = useState("");
+    const [avionSource, setAvionSource] = useState("");
     
 
 
@@ -40,7 +48,7 @@ const jsypa = () => {
         // const ageTrimmed = age.trim();
         
         try {
-            const res = await fetch("http://localhost:5000/api/distance/", {
+            const res = await fetch("/api/distance/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -77,6 +85,14 @@ const jsypa = () => {
             setTrainArrivee(String(data.trainArrivee ?? ""));
             setTrainLignes(String(data.trainLignes ?? ""));
             setTrainSource(String(data.trainSource ?? ""));
+            setAvionName(String(data.avionName ?? ""));
+            setAvionEmissions(String(data.avionEmissions ?? ""));
+            setAvionTemps(String(data.avionTemps ?? ""));
+            setAvionDistance_km(String(data.avionDistance_km ?? ""));
+            setAvionPrix(String(data.avionPrix ?? ""));
+            setAvionAeroportDepart(String(data.avionAeroportDepart ?? ""));
+            setAvionAeroportArrivee(String(data.avionAeroportArrivee ?? ""));
+            setAvionSource(String(data.avionSource ?? ""));
         } catch (err) {
         alert("Erreur : " + err);
         }
@@ -206,22 +222,150 @@ const jsypa = () => {
                     </article>
 
                     {/* ============= Partie Voiture ==============*/}
-                    <div className="bloc voiture">
-                        <div className="icon">🚗</div>
-                        <h3>Voiture</h3>
-                        <p>Pour plus de liberté.</p>
-                        <p>temps : {voitureTemps_heures}</p>
-                        <p>Distances : {voitureDistance_km}</p>
-                        <p>Prix en (€) : {voiturePrix}</p>
-                        <p>Emisions : {voitureEmissions}</p>
-                    </div>
+                    <article className="train-card">
+                        <h3 className="train-card__title">Voiture</h3>
+
+                        <div className="train-card__image" aria-hidden>
+                            <div className="train-card__image-inner">
+                                <span className="train-card__image-emoji">🚗</span>
+                            </div>
+                        </div>
+
+                        <div className="train-card__metrics">
+                            <div className="train-metric">
+                                <span className="train-metric__icon" title="Temps">
+                                    ⌛
+                                </span>
+                                <div className="train-metric__track train-metric__track--time">
+                                    <div
+                                        className="train-metric__fill"
+                                        style={{
+                                            width: trainTemps_minutes ? "100%" : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <span className="train-metric__value">{trainTemps || trainTemps_minutes || "..."}</span>
+                            </div>
+
+                            <div className="train-metric">
+                                <span className="train-metric__icon" title="Prix">
+                                    💰
+                                </span>
+                                <div className="train-metric__track train-metric__track--price">
+                                    <div
+                                        className="train-metric__fill"
+                                        style={{
+                                            width: trainPrix ? "100%" : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <span className="train-metric__value">{trainPrix || "..."}</span>
+                            </div>
+
+                            <div className="train-metric">
+                                <span className="train-metric__icon" title="Émissions">
+                                    🌱
+                                </span>
+                                <div className="train-metric__track train-metric__track--eco">
+                                    <div
+                                        className="train-metric__fill"
+                                        style={{
+                                            width: trainEmissions ? "100%" : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <span className="train-metric__value">{trainEmissions || "..."}</span>
+                            </div>
+                        </div>
+
+                        <div className="train-card__footer">
+                            <p className="train-card__footer-label">Détails trajets</p>
+                            <p>Pour plus de liberté.</p>
+                            <p>temps : {voitureTemps_heures}</p>
+                            <p>Distances : {voitureDistance_km}</p>
+                            <p>Prix en (€) : {voiturePrix}</p>
+                            <p>Emisions : {voitureEmissions}</p>
+                            <button type="button" className="train-card__more">
+                                En savoir plus
+                            </button>
+                        </div>
+                    </article>
+
 
                     {/* ============= Partie Avion ==============*/}
-                    <div className="bloc avion">
-                        <div className="icon">✈️</div>
-                        <h3>Avion</h3>
-                        <p>Le plus rapide sur longue distance.</p>
-                    </div>
+                    <article className="train-card">
+                        <h3 className="train-card__title">Avion</h3>
+
+                        <div className="train-card__image" aria-hidden>
+                            <div className="train-card__image-inner">
+                                <span className="train-card__image-emoji">✈️</span>
+                            </div>
+                        </div>
+
+                        <div className="train-card__metrics">
+                            <div className="train-metric">
+                                <span className="train-metric__icon" title="Temps">
+                                    ⌛
+                                </span>
+                                <div className="train-metric__track train-metric__track--time">
+                                    <div
+                                        className="train-metric__fill"
+                                        style={{
+                                            width: trainTemps_minutes ? "100%" : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <span className="train-metric__value">{trainTemps || trainTemps_minutes || "..."}</span>
+                            </div>
+
+                            <div className="train-metric">
+                                <span className="train-metric__icon" title="Prix">
+                                    💰
+                                </span>
+                                <div className="train-metric__track train-metric__track--price">
+                                    <div
+                                        className="train-metric__fill"
+                                        style={{
+                                            width: trainPrix ? "100%" : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <span className="train-metric__value">{trainPrix || "..."}</span>
+                            </div>
+
+                            <div className="train-metric">
+                                <span className="train-metric__icon" title="Émissions">
+                                    🌱
+                                </span>
+                                <div className="train-metric__track train-metric__track--eco">
+                                    <div
+                                        className="train-metric__fill"
+                                        style={{
+                                            width: trainEmissions ? "100%" : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <span className="train-metric__value">{trainEmissions || "..."}</span>
+                            </div>
+                        </div>
+
+                        <div className="train-card__footer">
+                            <p className="train-card__footer-label">Détails trajets</p>
+                            <p>Le plus rapide sur longue distance.</p>
+                            <p>Transport : {avionName || "..."}</p>
+                            <p>Temps : {avionTemps || "..."}</p>
+                            <p>Distance : {avionDistance_km || "..."} km</p>
+                            <p>Prix en (â‚¬) : {avionPrix || "..."}</p>
+                            <p>Emissions : {avionEmissions || "..."} kgCO2e</p>
+                            <p>Aeroport depart : {avionAeroportDepart || "..."}</p>
+                            <p>Aeroport arrivee : {avionAeroportArrivee || "..."}</p>
+                            <p>Source : {avionSource || "..."}</p>
+                            <button type="button" className="train-card__more">
+                                En savoir plus
+                            </button>
+                        </div>
+                    </article>
+
                 </div>
 
             </section>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useViewTransitionState } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./NavBar.css";
 // import { BiLogoReact } from "react-icons/bi";
 
@@ -9,10 +9,10 @@ const NavBar = () => {
     let color ="";
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/status")
+        fetch("/api/status")
             .then((res) => res.json())
             .then((data) => setstatus(data.status))
-    })
+    }, [])
 
   
     if (status === "ok") {

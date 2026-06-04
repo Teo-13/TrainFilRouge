@@ -19,6 +19,13 @@ def status():
         "status": "ok"
     })
 
+
+@app.route("/api/health")
+def health():
+    return jsonify({
+        "status": "ok"
+    })
+
 # Configuration
 EXCEL_FILE = os.path.join(os.path.dirname(__file__), "bbdteste.xlsx")
 @app.route("/api/dataexcel")

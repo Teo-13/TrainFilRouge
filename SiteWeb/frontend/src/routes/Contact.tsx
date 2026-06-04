@@ -51,7 +51,7 @@ const Contact = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/send", {
+      const res = await fetch("/api/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,19 +78,19 @@ const Contact = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/hello")
+    fetch("/api/hello")
       .then((res) => res.json())
       .then((data) => setHelloMessage(data.message));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/users")
+    fetch("/api/users")
       .then((res) => res.json())
       .then((data) => setUsers(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/data")
+    fetch("/api/data")
       .then((res) => res.json())
       .then((data) => {
         setTemperature(data.temperature);

@@ -13,13 +13,16 @@ const Home = () => {
 
     return (
         <div>
-
-            <section className="AfficheBandeau">
+            <section className="hero-search">
                 <h1>Voyager en train, c'est bien ?</h1>
                 <p>Est ce que</p>
             </section>
 
-            <div className="slider" ref={sliderRootRef}>
+            <section>
+                donner sur la pollution des transport 
+            </section>
+
+            {/* <div className="slider" ref={sliderRootRef}>
                 <button className="btn left">◀</button>
 
                 <div className="cards-container" id="slider">
@@ -35,7 +38,7 @@ const Home = () => {
                 </div>
 
                 <button className="btn right">▶</button>
-            </div>
+            </div> */}
 
             <section className="blocemesionco2">
                 <div className="co2-hero">
