@@ -71,6 +71,7 @@ const Home = () => {
         loadEmissions();
     }, [distanceKm]);
 
+    // ===================== animation GSAP ======================
     useEffect(() => {
         const animation = gsap.context(() => {
             gsap.from(".sec2 .info-box", {
@@ -105,6 +106,38 @@ const Home = () => {
 
         return () => animation.revert();
     }, []);
+
+
+    // ============= calcule de l'émission de CO2 selon la distance ============================
+    const [formError, setFormError] = useState("");
+
+    const formaulaireDistance = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setFormError("");
+
+        try {
+            const res = await fetch("/api/emission", {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                    distanceKm
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error ("Erreur serveur");
+            }
+            const data = await res.json();
+
+            
+        }
+        catch {
+
+        }
+    }
+
 
     return (
         <div>
@@ -163,14 +196,17 @@ const Home = () => {
                 <div className="co2-card">
                     <div className="co2-input-row">
                         <label htmlFor="distance-km">Distance parcourue (km)</label>
-                        <input
-                            id="distance-km"
-                            type="number"
-                            min="0"
-                            step="1"
-                            value={distanceKm}
-                            onChange={(e) => setDistanceKm(Math.max(0, Number(e.target.value) || 0))}
-                        />
+                        <form onSubmit={formaulaireDistance}>
+                            <input
+                                id="distance-km"
+                                type="number"
+                                min="0"
+                                step="1"
+                                value={distanceKm}
+                                onChange={(e) => setDistanceKm(Math.max(0, Number(e.target.value) || 0))}
+                            />
+                            <button type="submit" className="btn-submit">Rechercher</button>
+                        </form>
                     </div>
 
                     <div id="emission" className="co2-list">

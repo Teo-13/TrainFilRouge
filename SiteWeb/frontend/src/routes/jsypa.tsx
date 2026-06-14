@@ -220,26 +220,6 @@ const jsypa = () => {
                     </label>
                 </div>
 
-                {classementTransports.length > 0 && (
-                    <div className="classement-transports">
-                        <h3>Classement selon vos preferences</h3>
-                        <div className="classement-transports__list">
-                            {classementTransports.map((transport, index) => (
-                                <div className="classement-transports__item" key={transport.transport}>
-                                    <span className="classement-transports__rank">{index + 1}</span>
-                                    <div className="classement-transports__content">
-                                        <strong>{transport.label}</strong>
-                                        <span>
-                                            Temps {formatScore(transport.scoreTemps)} | Prix {formatScore(transport.scorePrix)} | CO2 {formatScore(transport.scoreEmission)}
-                                        </span>
-                                    </div>
-                                    <span className="classement-transports__score">{formatScore(transport.score)}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
                 <div className="liste">
                     {/* ============= Partie Train ==============*/}
                     <article className="train-card">
