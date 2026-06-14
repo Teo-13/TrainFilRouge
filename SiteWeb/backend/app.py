@@ -5,6 +5,7 @@ import os
 
 from routes.APIdistance import distance_bp
 from routes.APIemissionDistance import emsissionDistance_bp
+from routes.APIactiviter import activiter_bp
 
 app = Flask(__name__)
 CORS(app)  # autorise React a appeler l'API
@@ -12,6 +13,7 @@ CORS(app)  # autorise React a appeler l'API
 # ==== import des routes ====
 app.register_blueprint(distance_bp, url_prefix='/api/distance')
 app.register_blueprint(emsissionDistance_bp, url_prefix='/api/emissions')
+app.register_blueprint(activiter_bp, url_prefix='/api/activiter')
 
 
 
