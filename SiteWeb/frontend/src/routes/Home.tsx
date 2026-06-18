@@ -37,40 +37,6 @@ const Home = () => {
     const [emissionsError, setEmissionsError] = useState("");
     const [emissionsLoading, setEmissionsLoading] = useState(false);
 
-    useEffect(() => {
-        const loadEmissions = async () => {
-            setEmissionsLoading(true);
-            setEmissionsError("");
-
-            try {
-                const res = await fetch("/api/emissions/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        distance: distanceKm,
-                    }),
-                });
-
-                const data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data.error || "Erreur serveur");
-                }
-
-                setEmissions(Array.isArray(data.transports) ? data.transports : []);
-            } catch {
-                setEmissions([]);
-                setEmissionsError("Impossible de calculer les emissions CO2.");
-            } finally {
-                setEmissionsLoading(false);
-            }
-        };
-
-        loadEmissions();
-    }, [distanceKm]);
-
     // ===================== animation GSAP ======================
     useEffect(() => {
         const animation = gsap.context(() => {
@@ -109,34 +75,35 @@ const Home = () => {
 
 
     // ============= calcule de l'émission de CO2 selon la distance ============================
-    const [formError, setFormError] = useState("");
-
     const formaulaireDistance = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setFormError("");
+        setEmissionsLoading(true);
+        setEmissionsError("");
 
         try {
-            const res = await fetch("/api/emission", {
+            const res = await fetch("/api/emissions/", {
                 method: "POST",
                 headers: {
-                    "Content-Type" : "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    distanceKm
+                    distance: distanceKm,
                 }),
             });
 
-            if (!res.ok) {
-                throw new Error ("Erreur serveur");
-            }
             const data = await res.json();
 
-            
+            if (!res.ok) {
+                throw new Error(data.error || "Erreur serveur");
+            }
+            setEmissions(Array.isArray(data.transports) ? data.transports : []);
+        } catch {
+            setEmissions([]);
+            setEmissionsError("Impossible de calculer les emissions CO2.");
+        } finally {
+            setEmissionsLoading(false);
         }
-        catch {
-
-        }
-    }
+    };
 
 
     return (
@@ -205,7 +172,9 @@ const Home = () => {
                                 value={distanceKm}
                                 onChange={(e) => setDistanceKm(Math.max(0, Number(e.target.value) || 0))}
                             />
-                            <button type="submit" className="btn-submit">Rechercher</button>
+                            <button type="submit" className="btn-submit" disabled={emissionsLoading}>
+                                {emissionsLoading ? "Calcul en cours..." : "Envoyer"}
+                            </button>
                         </form>
                     </div>
 

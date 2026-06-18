@@ -14,6 +14,16 @@
     font-size: 2.5rem;
 }
 
+.hero-search p {
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.hero-search a {
+    color: #dbeafe;
+}
+
 .section {
   padding: 20px;
 }
@@ -129,6 +139,14 @@
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   font-size: 1rem;
+}
+
+.co2-input-row form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .co2-list {
@@ -372,9 +390,90 @@
   color: #0f172a;
 }
 
+@media (max-width: 900px) {
+  .hero-search {
+    padding: 48px 20px;
+  }
+
+  .hero-search h1 {
+    font-size: 2rem;
+    margin-bottom: 18px;
+  }
+
+  .container {
+    width: min(100%, 900px);
+  }
+}
+
 @media (max-width: 760px) {
+  .blocemesionco2 {
+    margin-top: 40px;
+    padding: 0 14px 56px;
+  }
+
+  .co2-hero,
+  .co2-card {
+    padding: 20px 16px;
+  }
+
+  .co2-input-row {
+    align-items: stretch;
+  }
+
+  .co2-input-row label {
+    width: 100%;
+    text-align: left;
+  }
+
+  .co2-input-row form {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .co2-input-row input,
+  .co2-input-row .btn-submit {
+    width: 100%;
+  }
+
+  .sec2,
+  .sec2-example {
+    margin-top: 40px;
+    padding: 0 14px;
+  }
+
+  .home-intro {
+    margin-top: 36px;
+    padding: 0 14px;
+  }
+
   .sec2-example .container {
     flex-wrap: wrap;
     justify-content: center;
+    padding: 1rem;
+  }
+
+  .box {
+    width: calc(50% - 8px);
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-search {
+    padding: 40px 14px;
+  }
+
+  .hero-search h1 {
+    font-size: 1.7rem;
+  }
+
+  .co2-row-title,
+  .co2-row-value {
+    word-break: break-word;
+  }
+
+  .box {
+    width: 100%;
   }
 }

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 
 import NavBar from "./components/NavBar";
 import FooterBar from "./components/FooterBar.tsx";
@@ -7,7 +7,9 @@ import Home from "./routes/Home";
 import Contact from "./routes/Contact";
 import About from "./routes/About";
 import Jsypa from "./routes/jsypa.tsx";
-import Transport from "./routes/transport.tsx";
+import Train from "./routes/train.tsx";
+import Voiture from "./routes/voiture.tsx";
+import Avion from "./routes/avion.tsx";
 
 
 function App() {
@@ -21,7 +23,9 @@ function App() {
         <Route path="/contact" element={<Contact/>}/>
         <Route path="/apropos" element={<About/>}/>
         <Route path="/jsypa" element={<Jsypa/>}/>
-        <Route path="/transport" element={<Transport/>}/>
+        <Route path="train" element={<Train/>}/>
+        <Route path="/voiture" element={<Voiture/>}/>
+        <Route path="/avion" element={<Avion/>}/>
       </Routes>
 
       <footer>
