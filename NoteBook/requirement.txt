@@ -1,0 +1,9 @@
+matplotlib
+pandas
+seaborn
+contextily
+geopandas
+shapely
+numpy
+openpyxl
+jupyter
