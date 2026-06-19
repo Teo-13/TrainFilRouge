@@ -1,0 +1,38 @@
+.bandeau-image {
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+.bandeau-image h1 {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 2rem;
+    padding-bottom: 30px;
+}
+
+.bandeau-image .image {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permet le passage sur 2 lignes en petit écran */
+    justify-content: center;
+    /* Centre les images */
+    gap: 15px;
+    /* Espace entre les images */
+    width: 100%;
+}
+
+
+/* Style des images */
+
+.bandeau-image .image img {
+    width: 22%;
+    /* 4 images par ligne sur grand écran */
+    min-width: 120px;
+    /* Taille minimale en mobile */
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
