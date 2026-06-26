@@ -1,0 +1,437 @@
+.avion-page {
+    background: #f3f4f6;
+    color: #111827;
+    padding: 36px 0 72px;
+}
+
+.avion-shell {
+    width: min(100%, 920px);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.avion-hero {
+    margin-bottom: 28px;
+}
+
+.avion-hero__panel {
+    width: min(100%, 720px);
+    margin: 0 auto;
+    padding: 42px 36px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #0d3b66 0%, #1d4ed8 60%, #4f46e5 100%);
+    color: #fff;
+}
+
+.avion-kicker {
+    margin: 0 0 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.88;
+}
+
+.avion-hero__panel h1 {
+    margin: 0;
+    max-width: 540px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+}
+
+.avion-hero__text {
+    margin: 28px 0 0;
+    max-width: 580px;
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.avion-copy-center {
+    text-align: center;
+    margin-bottom: 44px;
+}
+
+.avion-status-section {
+    margin-bottom: 26px;
+}
+
+.avion-copy-center h2,
+.avion-map-section h2,
+.avion-key-section h2,
+.avion-copy-block h2,
+.avion-white-panel h2,
+.avion-dataset-panel h2,
+.avion-didyouknow h2,
+.avion-sources-panel h2,
+.avion-map-content h3,
+.avion-segment-copy h3 {
+    margin: 0 0 14px;
+    font-size: clamp(1.9rem, 3vw, 2.45rem);
+    line-height: 1.12;
+    font-weight: 800;
+    color: #111111;
+}
+
+.avion-copy-center p,
+.avion-copy-block p,
+.avion-white-panel p,
+.avion-dataset-panel p,
+.avion-segment-copy p,
+.avion-didyouknow li,
+.avion-source-card__text {
+    margin: 0;
+    line-height: 1.48;
+    font-size: 1rem;
+    color: #222222;
+}
+
+.avion-copy-center p {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.avion-map-section {
+    margin-bottom: 44px;
+    text-align: center;
+}
+
+.avion-map-card,
+.avion-white-panel,
+.avion-dataset-panel,
+.avion-sources-panel {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.avion-map-card {
+    margin-top: 18px;
+    padding: 24px;
+}
+
+.avion-map-visual {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.avion-map-visual img {
+    width: min(100%, 720px);
+    height: auto;
+    border-radius: 10px;
+    display: block;
+}
+
+.avion-map-content {
+    width: min(100%, 660px);
+    margin: 0 auto;
+    text-align: left;
+}
+
+.avion-map-content h3 {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.avion-segments {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0 26px;
+}
+
+.avion-segment-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 56px;
+    gap: 10px;
+    align-items: center;
+}
+
+.avion-segment-row__name,
+.avion-segment-row__share {
+    font-size: 0.98rem;
+}
+
+.avion-segment-row__track {
+    height: 18px;
+    border-radius: 999px;
+    background: #d9e8ff;
+    overflow: hidden;
+}
+
+.avion-segment-row__fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #7eb6ff 0%, #a8cfff 100%);
+}
+
+.avion-segment-copy ul,
+.avion-white-panel ul,
+.avion-didyouknow ul {
+    margin: 10px 0 0;
+    padding-left: 22px;
+}
+
+.avion-segment-copy li,
+.avion-white-panel li,
+.avion-didyouknow li {
+    margin-bottom: 6px;
+}
+
+.avion-key-section {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.avion-color-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.avion-color-grid--facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.avion-color-card {
+    min-height: 220px;
+    padding: 24px 18px;
+    border-radius: 22px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+}
+
+.avion-color-card p {
+    margin: 0 0 16px;
+    font-size: 0.98rem;
+    line-height: 1.25;
+    color: inherit;
+    max-width: 100%;
+}
+
+.avion-color-card strong {
+    display: block;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+    font-weight: 800;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.avion-color-card span {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.avion-color-grid--facts .avion-color-card {
+    min-height: 230px;
+}
+
+.avion-color-grid--facts .avion-color-card strong {
+    font-size: clamp(1.3rem, 2.4vw, 2.25rem);
+}
+
+.avion-color-card--gray strong {
+    font-size: clamp(1.1rem, 1.8vw, 1.95rem);
+    line-height: 1.2;
+}
+
+.avion-color-card--red {
+    background: #d95043;
+}
+
+.avion-color-card--blue {
+    background: #5372e8;
+}
+
+.avion-color-card--gold {
+    background: #e3b64d;
+}
+
+.avion-color-card--orange {
+    background: #dd7b43;
+}
+
+.avion-color-card--green {
+    background: #5da832;
+}
+
+.avion-color-card--pink {
+    background: #c74ac8;
+}
+
+.avion-color-card--gray {
+    background: #a8a8a8;
+}
+
+.avion-copy-block {
+    width: min(100%, 720px);
+    margin: 0 auto 42px;
+    text-align: center;
+}
+
+.avion-copy-block--large {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.avion-white-panel {
+    margin-bottom: 42px;
+    padding: 28px;
+}
+
+.avion-white-panel__block + .avion-white-panel__block {
+    margin-top: 28px;
+}
+
+.avion-white-panel__block h2 {
+    text-align: center;
+}
+
+.avion-dataset-panel,
+.avion-sources-panel {
+    margin-bottom: 42px;
+    padding: 28px;
+}
+
+.avion-source-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.avion-source-link:hover,
+.avion-source-card a:hover {
+    text-decoration: underline;
+}
+
+.avion-sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.avion-source-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid #dbe4f0;
+}
+
+.avion-source-card__label {
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.avion-source-card a {
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.avion-didyouknow {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.avion-feedback {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #eef2ff;
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.avion-feedback--error {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+@media (max-width: 900px) {
+    .avion-color-grid,
+    .avion-color-grid--facts,
+    .avion-sources-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .avion-page {
+        padding-top: 24px;
+    }
+
+    .avion-hero__panel,
+    .avion-map-card,
+    .avion-white-panel,
+    .avion-dataset-panel,
+    .avion-sources-panel,
+    .avion-copy-block--large {
+        padding: 20px;
+    }
+
+    .avion-copy-center h2,
+    .avion-map-section h2,
+    .avion-key-section h2,
+    .avion-copy-block h2,
+    .avion-white-panel h2,
+    .avion-dataset-panel h2,
+    .avion-didyouknow h2,
+    .avion-sources-panel h2,
+    .avion-map-content h3,
+    .avion-segment-copy h3 {
+        font-size: 1.6rem;
+    }
+
+    .avion-segment-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .avion-segment-row__share {
+        justify-self: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .avion-shell {
+        padding: 0 14px;
+    }
+
+    .avion-color-grid,
+    .avion-color-grid--facts,
+    .avion-sources-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .avion-color-card {
+        min-height: 180px;
+    }
+
+    .avion-color-grid--facts .avion-color-card {
+        min-height: 190px;
+    }
+
+    .avion-color-grid--facts .avion-color-card strong,
+    .avion-color-card--gray strong {
+        font-size: 1.45rem;
+    }
+}

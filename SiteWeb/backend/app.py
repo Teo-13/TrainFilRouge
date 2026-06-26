@@ -1,4 +1,6 @@
-from flask import Flask, jsonify, request, Blueprint
+from pathlib import Path
+
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import pandas as pd
 import os
@@ -7,6 +9,11 @@ from routes.APIdistance import distance_bp
 from routes.APIemissionDistance import emsissionDistance_bp
 from routes.APIactiviter import activiter_bp
 from routes.APItrain import train_bp
+from routes.APIavion import avion_bp
+from routes.APIvoiture import voiture_bp
+
+BASE_DIR = Path(__file__).resolve().parent
+FRONTEND_DIST_DIR = BASE_DIR.parent / "frontend" / "dist"
 
 app = Flask(__name__)
 CORS(app)  # autorise React a appeler l'API
@@ -16,6 +23,8 @@ app.register_blueprint(distance_bp, url_prefix='/api/distance')
 app.register_blueprint(emsissionDistance_bp, url_prefix='/api/emissions')
 app.register_blueprint(activiter_bp, url_prefix='/api/activiter')
 app.register_blueprint(train_bp, url_prefix='/api/train')
+app.register_blueprint(avion_bp, url_prefix='/api/avion')
+app.register_blueprint(voiture_bp, url_prefix='/api/voiture')
 
 
 
@@ -76,6 +85,28 @@ def users():
     ])
 
 
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_frontend(path):
+    if path.startswith("api/"):
+        return jsonify({"error": "Route API introuvable."}), 404
+
+    if not FRONTEND_DIST_DIR.exists():
+        return jsonify({
+            "error": "Frontend non construit. Lancez 'npm run build' dans SiteWeb/frontend.",
+        }), 404
+
+    requested_file = FRONTEND_DIST_DIR / path
+    if path and requested_file.is_file():
+        return send_from_directory(FRONTEND_DIST_DIR, path)
+
+    index_file = FRONTEND_DIST_DIR / "index.html"
+    if index_file.is_file():
+        return send_from_directory(FRONTEND_DIST_DIR, "index.html")
+
+    return jsonify({"error": "index.html introuvable dans le build frontend."}), 404
+
+
 @app.route("/api/data")
 def data():
     temperature = 45
@@ -132,4 +163,4 @@ def formulaire():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5002)

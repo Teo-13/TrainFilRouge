@@ -1,0 +1,438 @@
+.voiture-page {
+    background: #f3f4f6;
+    color: #111827;
+    padding: 36px 0 72px;
+}
+
+.voiture-shell {
+    width: min(100%, 920px);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.voiture-hero {
+    margin-bottom: 28px;
+}
+
+.voiture-hero__panel {
+    width: min(100%, 760px);
+    margin: 0 auto;
+    padding: 42px 36px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #1f2937 0%, #8b1e3f 58%, #d97706 100%);
+    color: #ffffff;
+}
+
+.voiture-kicker {
+    margin: 0 0 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.88;
+}
+
+.voiture-hero__panel h1 {
+    margin: 0;
+    max-width: 620px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+}
+
+.voiture-hero__text {
+    margin: 28px 0 0;
+    max-width: 600px;
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.voiture-copy-center {
+    text-align: center;
+    margin-bottom: 44px;
+}
+
+.voiture-status-section {
+    margin-bottom: 26px;
+}
+
+.voiture-copy-center h2,
+.voiture-map-section h2,
+.voiture-key-section h2,
+.voiture-copy-block h2,
+.voiture-white-panel h2,
+.voiture-dataset-panel h2,
+.voiture-didyouknow h2,
+.voiture-sources-panel h2,
+.voiture-map-copy h3,
+.voiture-map-side h3 {
+    margin: 0 0 14px;
+    font-size: clamp(1.9rem, 3vw, 2.45rem);
+    line-height: 1.12;
+    font-weight: 800;
+    color: #111111;
+}
+
+.voiture-copy-center p,
+.voiture-copy-block p,
+.voiture-white-panel p,
+.voiture-dataset-panel p,
+.voiture-map-copy p,
+.voiture-map-side__note,
+.voiture-didyouknow li,
+.voiture-source-card__text {
+    margin: 0;
+    line-height: 1.48;
+    font-size: 1rem;
+    color: #222222;
+}
+
+.voiture-copy-center p {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.voiture-map-section {
+    margin-bottom: 44px;
+    text-align: center;
+}
+
+.voiture-map-card,
+.voiture-white-panel,
+.voiture-dataset-panel,
+.voiture-sources-panel {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.voiture-map-card {
+    margin-top: 18px;
+    padding: 24px;
+}
+
+.voiture-map-visual {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+.voiture-map-visual img {
+    width: min(100%, 760px);
+    height: auto;
+    border-radius: 12px;
+    display: block;
+}
+
+.voiture-map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+    gap: 24px;
+    align-items: start;
+    text-align: left;
+}
+
+.voiture-map-copy ul,
+.voiture-white-panel ul,
+.voiture-didyouknow ul {
+    margin: 10px 0 0;
+    padding-left: 22px;
+}
+
+.voiture-map-copy li,
+.voiture-white-panel li,
+.voiture-didyouknow li {
+    margin-bottom: 6px;
+}
+
+.voiture-map-side {
+    padding: 20px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid #dbe4f0;
+}
+
+.voiture-map-side h3,
+.voiture-map-copy h3 {
+    font-size: 1.2rem;
+}
+
+.voiture-family-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 18px 0 16px;
+}
+
+.voiture-family-row {
+    display: grid;
+    grid-template-columns: 170px 1fr 56px;
+    gap: 10px;
+    align-items: center;
+}
+
+.voiture-family-row__name,
+.voiture-family-row__share {
+    font-size: 0.96rem;
+}
+
+.voiture-family-row__track {
+    height: 18px;
+    border-radius: 999px;
+    background: #ffe1cf;
+    overflow: hidden;
+}
+
+.voiture-family-row__fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f97316 0%, #fb7185 100%);
+}
+
+.voiture-key-section {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.voiture-color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.voiture-color-card {
+    min-height: 235px;
+    padding: 24px 18px;
+    border-radius: 22px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+}
+
+.voiture-color-card p {
+    margin: 0 0 16px;
+    font-size: 0.98rem;
+    line-height: 1.25;
+    color: inherit;
+    max-width: 100%;
+}
+
+.voiture-color-card strong {
+    display: block;
+    font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+    line-height: 1.08;
+    font-weight: 800;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.voiture-color-card span {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.voiture-color-card--gray strong {
+    font-size: clamp(1.2rem, 2vw, 1.95rem);
+    line-height: 1.2;
+}
+
+.voiture-color-card--red {
+    background: #d95043;
+}
+
+.voiture-color-card--blue {
+    background: #5372e8;
+}
+
+.voiture-color-card--gold {
+    background: #e3b64d;
+}
+
+.voiture-color-card--teal {
+    background: #189a8d;
+}
+
+.voiture-color-card--orange {
+    background: #dd7b43;
+}
+
+.voiture-color-card--green {
+    background: #5da832;
+}
+
+.voiture-color-card--pink {
+    background: #c74ac8;
+}
+
+.voiture-color-card--gray {
+    background: #8c939d;
+}
+
+.voiture-copy-block {
+    width: min(100%, 740px);
+    margin: 0 auto 42px;
+    text-align: center;
+}
+
+.voiture-copy-block--large {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.voiture-white-panel {
+    margin-bottom: 42px;
+    padding: 28px;
+}
+
+.voiture-white-panel__block + .voiture-white-panel__block {
+    margin-top: 28px;
+}
+
+.voiture-white-panel__block h2 {
+    text-align: center;
+}
+
+.voiture-dataset-panel,
+.voiture-sources-panel {
+    margin-bottom: 42px;
+    padding: 28px;
+}
+
+.voiture-source-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: #b45309;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.voiture-source-link:hover,
+.voiture-source-card a:hover {
+    text-decoration: underline;
+}
+
+.voiture-sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.voiture-source-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid #dbe4f0;
+}
+
+.voiture-source-card__label {
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.voiture-source-card a {
+    color: #b45309;
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.voiture-didyouknow {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.voiture-feedback {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fff7ed;
+    color: #9a3412;
+    font-weight: 700;
+}
+
+.voiture-feedback--error {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+@media (max-width: 900px) {
+    .voiture-color-grid,
+    .voiture-sources-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .voiture-map-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .voiture-page {
+        padding-top: 24px;
+    }
+
+    .voiture-hero__panel,
+    .voiture-map-card,
+    .voiture-map-side,
+    .voiture-white-panel,
+    .voiture-dataset-panel,
+    .voiture-sources-panel,
+    .voiture-copy-block--large {
+        padding: 20px;
+    }
+
+    .voiture-copy-center h2,
+    .voiture-map-section h2,
+    .voiture-key-section h2,
+    .voiture-copy-block h2,
+    .voiture-white-panel h2,
+    .voiture-dataset-panel h2,
+    .voiture-didyouknow h2,
+    .voiture-sources-panel h2,
+    .voiture-map-copy h3,
+    .voiture-map-side h3 {
+        font-size: 1.6rem;
+    }
+
+    .voiture-family-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .voiture-family-row__share {
+        justify-self: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .voiture-shell {
+        padding: 0 14px;
+    }
+
+    .voiture-color-grid,
+    .voiture-sources-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .voiture-color-card {
+        min-height: 200px;
+    }
+
+    .voiture-color-card strong,
+    .voiture-color-card--gray strong {
+        font-size: 1.45rem;
+    }
+}

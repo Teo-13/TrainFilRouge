@@ -80,7 +80,7 @@ python app.py
 API test:
 
 ```
-GET http://localhost:5001/api/health
+GET http://localhost:5002/api/health
 ```
 
 ### 3) Installer et lancer le front

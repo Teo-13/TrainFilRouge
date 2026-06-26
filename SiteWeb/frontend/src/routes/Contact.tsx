@@ -58,7 +58,7 @@ const Contact = () => {
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        throw new Error(data?.message || "Erreur serveur");
+        throw new Error(data?.message || data?.error || "Erreur serveur");
       }
 
       setFormSuccess(data?.message || "Donnees envoyees.");

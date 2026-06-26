@@ -1,9 +1,5 @@
 from flask import Blueprint, jsonify, request
-import requests
 from flask_cors import cross_origin
-
-from geopy.geocoders import Nominatim
-from geopy.distance import geodesic
 
 from utils.voiture import donneeVoiture
 from utils.train import donneeTrain
@@ -13,136 +9,90 @@ from utils.avion import donneeAvion
 distance_bp = Blueprint('distance', __name__)
 
 
-CRITERES_SCORE = [
-    ("temps_minutes", "scoreTemps"),
-    ("prix", "scorePrix"),
-    ("emissions", "scoreEmission"),
+CRITERES_OPTIMISATION = [
+    ("temps_minutes", "temps", "Temps"),
+    ("prix", "prix", "Prix"),
+    ("emissions", "emission", "CO2"),
 ]
-
-
-def _score_metric(transports, key):
-    """
-    Calcule un score de 0 a 100 pour un critere.
-
-    Ce n'est pas un modele de machine learning: on compare seulement les
-    valeurs des transports entre elles. La valeur la plus basse est la
-    meilleure, donc elle recoit 100. La plus haute recoit 0.
-    Formule: 100 - ((valeur - minimum) / (maximum - minimum)) * 100.
-    """
-    valeurs = [
-        transport[key]
-        for transport in transports.values()
-        if isinstance(transport.get(key), (int, float)) and transport[key] > 0
-    ]
-
-    if not valeurs:
-        return {nom: 0 for nom in transports}
-
-    minimum = min(valeurs)
-    maximum = max(valeurs)
-
-    if minimum == maximum:
-        return {
-            nom: 100 if transport.get(key, 0) > 0 else 0
-            for nom, transport in transports.items()
-        }
-
-    scores = {}
-    for nom, transport in transports.items():
-        valeur = transport.get(key, 0)
-        if not isinstance(valeur, (int, float)) or valeur <= 0:
-            scores[nom] = 0
-        else:
-            scores[nom] = round(100 - ((valeur - minimum) / (maximum - minimum)) * 100)
-
-    return scores
-
 
 def criteres_preferes(temps, prix, emission_co2):
     """
-    Transforme les checkbox du formulaire en criteres utilises pour le
-    classement final. Si aucune preference n'est cochee, on utilise les
-    trois criteres: temps, prix et emissions.
+    Retourne les criteres actifs pour l'optimisation lineaire.
+
+    Si aucune case n'est cochee, on optimise sur les trois criteres.
     """
     criteres_selectionnes = []
 
     if temps == "oui":
-        criteres_selectionnes.append(("temps_minutes", "scoreTemps"))
+        criteres_selectionnes.append("temps")
     if prix == "oui":
-        criteres_selectionnes.append(("prix", "scorePrix"))
+        criteres_selectionnes.append("prix")
     if emission_co2 == "oui":
-        criteres_selectionnes.append(("emissions", "scoreEmission"))
+        criteres_selectionnes.append("emission")
 
-    return criteres_selectionnes or CRITERES_SCORE
+    return criteres_selectionnes or ["temps", "prix", "emission"]
 
 
-def calculer_scores_par_type(transports):
+def construire_ponderations(criteres_selectionnes):
     """
-    Premier scoring: calcule les scores separes temps/prix/emissions.
-
-    Ces scores servent aux barres affichees dans chaque carte transport.
-    Ils sont toujours calcules, meme si l'utilisateur ne coche qu'une seule
-    preference.
+    Attribue un poids uniforme aux criteres actifs.
+    Exemple: 2 criteres actifs -> 0.5 chacun.
     """
-    scores_par_critere = {
-        score_key: _score_metric(transports, metric_key)
-        for metric_key, score_key in CRITERES_SCORE
-    }
-
+    poids_actif = 1 / len(criteres_selectionnes)
     return {
-        nom: {
-            "scoreTemps": scores_par_critere["scoreTemps"].get(nom, 0),
-            "scorePrix": scores_par_critere["scorePrix"].get(nom, 0),
-            "scoreEmission": scores_par_critere["scoreEmission"].get(nom, 0),
-        }
-        for nom in transports
+        code: (poids_actif if code in criteres_selectionnes else 0)
+        for _, code, _ in CRITERES_OPTIMISATION
     }
 
 
-def calculer_score_preference(scores_par_type, criteres_selectionnes):
+def normaliser_transports(transports):
     """
-    Deuxieme scoring: calcule le score global selon les preferences.
+    Normalise chaque critere par son maximum pour pouvoir les combiner
+    lineairement sans melanger directement les unites.
 
-    Le score global est une moyenne simple des scores des criteres coches.
-    Exemple: si "rapide" et "eco" sont coches, on moyenne scoreTemps et
-    scoreEmission. Ce score sert au classement final.
+    La minimisation reste lineaire: somme(poids * critere_normalise).
     """
-    scores = {}
+    valeurs_normalisees = {nom: {} for nom in transports}
 
-    for nom, details in scores_par_type.items():
-        scores[nom] = {
-            **details,
-            "score": round(
-                sum(details[score_key] for _, score_key in criteres_selectionnes) / len(criteres_selectionnes)
-            ),
+    for metric_key, code, _ in CRITERES_OPTIMISATION:
+        valeurs = [
+            transport.get(metric_key, 0)
+            for transport in transports.values()
+            if isinstance(transport.get(metric_key), (int, float)) and transport.get(metric_key, 0) >= 0
+        ]
+        maximum = max(valeurs) if valeurs else 0
+
+        for nom, transport in transports.items():
+            valeur = transport.get(metric_key, 0)
+            if maximum <= 0 or not isinstance(valeur, (int, float)) or valeur < 0:
+                valeurs_normalisees[nom][code] = 0
+            else:
+                valeurs_normalisees[nom][code] = valeur / maximum
+
+    return valeurs_normalisees
+
+
+def optimiser_transports_lineaire(transports, ponderations):
+    """
+    Minimise une fonction objectif lineaire:
+    objectif = w_temps * temps_norm + w_prix * prix_norm + w_co2 * co2_norm
+    """
+    valeurs_normalisees = normaliser_transports(transports)
+    meilleur_transport = None
+    meilleure_valeur = None
+
+    for nom, transport in transports.items():
+        contributions = {
+            code: round(ponderations[code] * valeurs_normalisees[nom].get(code, 0), 4)
+            for _, code, _ in CRITERES_OPTIMISATION
         }
+        objectif_lineaire = round(sum(contributions.values()), 4)
 
-    return scores
+        if meilleure_valeur is None or objectif_lineaire < meilleure_valeur:
+            meilleur_transport = nom
+            meilleure_valeur = objectif_lineaire
 
-
-def classer_transports(scores):
-    """
-    Classe les transports du meilleur au moins bon selon le score global.
-    """
-    labels = {
-        "train": "Train",
-        "voiture": "Voiture",
-        "avion": "Avion",
-    }
-
-    classement = [
-        {
-            "transport": nom,
-            "label": labels.get(nom, nom),
-            "score": details["score"],
-            "scoreTemps": details["scoreTemps"],
-            "scorePrix": details["scorePrix"],
-            "scoreEmission": details["scoreEmission"],
-        }
-        for nom, details in scores.items()
-    ]
-
-    return sorted(classement, key=lambda transport: transport["score"], reverse=True)
+    return meilleur_transport
 
 
 @distance_bp.route('/', methods=['POST', 'OPTIONS'])
@@ -193,13 +143,9 @@ def distance():
             "emissions": avionData["avionEmissions"],
         },
     }
-    # 1) Scores par type: temps, prix, emissions. Utilises par les barres.
-    scores_par_type = calculer_scores_par_type(transports)
-
-    # 2) Score global puis classement selon les preferences cochees.
     criteres_selectionnes = criteres_preferes(temps, prix, emission_co2)
-    scores = calculer_score_preference(scores_par_type, criteres_selectionnes)
-    classement = classer_transports(scores)
+    ponderations = construire_ponderations(criteres_selectionnes)
+    transport_optimal = optimiser_transports_lineaire(transports, ponderations)
     
 
     # =====================
@@ -214,7 +160,7 @@ def distance():
 
     return jsonify({
         "status": "success",
-        "classementTransports": classement,
+        "transportOptimal": transport_optimal,
         # ====== donner voiture ========
         "voitureName": voitureName,
         "voitureEmissions": voitureEmissions,
@@ -222,10 +168,6 @@ def distance():
         "voitureTemps_minutes": voitureTemps_minutes,
         "voitureDistance_km": voitureDistance_km,
         "voiturePrix": voiturePrix,
-        "voitureScore": scores["voiture"]["score"],
-        "voitureScoreTemps": scores["voiture"]["scoreTemps"],
-        "voitureScorePrix": scores["voiture"]["scorePrix"],
-        "voitureScoreEmission": scores["voiture"]["scoreEmission"],
         # ======= donner avion =========
         "avionName": avionData["avionName"],
         "avionEmissions": avionData["avionEmissions"],
@@ -236,10 +178,6 @@ def distance():
         "avionAeroportDepart": avionData["avionAeroportDepart"],
         "avionAeroportArrivee": avionData["avionAeroportArrivee"],
         "avionSource": avionData["avionSource"],
-        "avionScore": scores["avion"]["score"],
-        "avionScoreTemps": scores["avion"]["scoreTemps"],
-        "avionScorePrix": scores["avion"]["scorePrix"],
-        "avionScoreEmission": scores["avion"]["scoreEmission"],
         # ======= donner train =========
         "trainName": trainData["trainName"],
         "trainEmissions": trainData["trainEmissions"],
@@ -254,8 +192,4 @@ def distance():
         "trainArrivee": trainData["trainArrivee"],
         "trainLignes": trainData["trainLignes"],
         "trainSource": trainData["trainSource"],
-        "trainScore": scores["train"]["score"],
-        "trainScoreTemps": scores["train"]["scoreTemps"],
-        "trainScorePrix": scores["train"]["scorePrix"],
-        "trainScoreEmission": scores["train"]["scoreEmission"],
     })

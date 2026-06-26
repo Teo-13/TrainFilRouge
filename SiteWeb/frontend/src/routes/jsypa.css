@@ -115,64 +115,6 @@
     margin: 0 10px;
 }
 
-.classement-transports {
-    max-width: 1100px;
-    margin: 0 auto 28px;
-}
-
-.classement-transports h3 {
-    margin: 0 0 12px;
-    text-align: center;
-    color: #1e3a8a;
-}
-
-.classement-transports__list {
-    display: grid;
-    gap: 10px;
-}
-
-.classement-transports__item {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    background: #fff;
-    border: 1px solid rgba(30, 58, 138, 0.12);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-}
-
-.classement-transports__rank {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 999px;
-    background: #1e3a8a;
-    color: #fff;
-    font-weight: 700;
-}
-
-.classement-transports__content {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: 4px;
-}
-
-.classement-transports__content span {
-    color: #64748b;
-    font-size: 0.92rem;
-    overflow-wrap: anywhere;
-}
-
-.classement-transports__score {
-    font-weight: 700;
-    color: #047857;
-    white-space: nowrap;
-}
-
 .liste-shell {
     position: relative;
     max-width: 1240px;
@@ -248,14 +190,19 @@
 
 .train-card__title {
     margin: 0;
-    text-align: center;
     font-size: clamp(1.15rem, 4vw, 1.5rem);
     font-weight: 700;
     color: #111;
 }
 
-.score-badge {
-    align-self: center;
+.train-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.train-card__badge {
     padding: 0.45rem 0.75rem;
     border-radius: 999px;
     background: #ecfdf5;
@@ -263,6 +210,7 @@
     border: 1px solid #a7f3d0;
     font-weight: 700;
     font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .train-card__image {
@@ -282,79 +230,10 @@
 }
 
 .train-card__image-emoji {
-    font-size: clamp(2.8rem, 10vw, 4.6rem);
+    font-size: clamp(1.8rem, 7vw, 2.7rem);
     line-height: 1;
-}
-
-.train-card__metrics {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-}
-
-.train-metric {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.train-metric__icon {
-    font-size: 1.2rem;
-    line-height: 1;
-    width: 1.75em;
-    text-align: center;
-    flex-shrink: 0;
-}
-
-.train-metric__track {
-    height: 14px;
-    border-radius: 999px;
-    overflow: hidden;
-    position: relative;
-    min-width: 0;
-}
-
-.train-metric__track--time {
-    background: #fbbf24;
-}
-
-.train-metric__track--time .train-metric__fill {
-    background: #ea580c;
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.35s ease;
-}
-
-.train-metric__track--price {
-    background: #fca5a5;
-}
-
-.train-metric__track--price .train-metric__fill {
-    background: #7f1d1d;
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.35s ease;
-}
-
-.train-metric__track--eco {
-    background: #bef264;
-}
-
-.train-metric__track--eco .train-metric__fill {
-    background: #15803d;
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.35s ease;
-}
-
-.train-metric__value {
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #111;
-    min-width: 4.5rem;
-    text-align: right;
+    font-weight: 800;
+    letter-spacing: 0.08em;
 }
 
 .trajetVoiture {
@@ -381,23 +260,6 @@
     color: #334155;
     text-align: left;
     overflow-wrap: anywhere;
-}
-
-.train-card__footer {
-    margin-top: 0.2rem;
-    padding: 0.95rem 1rem;
-    border-radius: 14px;
-    border: 1px solid rgba(37, 99, 235, 0.18);
-    background: #eff6ff;
-    color: #1d4ed8;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.train-card__footer:hover {
-    background: #dbeafe;
-    transform: translateY(-1px);
 }
 
 @media (max-width: 900px) {
@@ -466,14 +328,6 @@
     .train-card {
         flex-basis: min(320px, calc(100vw - 48px));
     }
-
-    .classement-transports__item {
-        grid-template-columns: auto 1fr;
-    }
-
-    .classement-transports__score {
-        grid-column: 2;
-    }
 }
 
 @media (max-width: 480px) {
@@ -499,12 +353,8 @@
         padding: 1rem;
     }
 
-    .train-metric {
-        gap: 0.5rem;
-    }
-
-    .train-metric__value {
-        min-width: 3.9rem;
-        font-size: 0.92rem;
+    .train-card__head {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
