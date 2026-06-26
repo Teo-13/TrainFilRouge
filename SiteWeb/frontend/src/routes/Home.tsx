@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import diff_departement from "../img/diff_departement.png";
+import imgTransport from "../img/transport.png";
+import imgGare from "../img/gare.png";
 import cartetrainImage from "../img/cartetrain.png";
 import "./home.css";
 
@@ -306,6 +309,23 @@ const Home = () => {
                         empreinte. Cela signifie que la facon d&apos;aller en vacances ou de circuler sur place pese souvent
                         davantage que beaucoup d&apos;autres postes du sejour.
                     </p>
+                </div>
+            </section>
+
+            <section className="home-map-section">
+                <div className="home-map-shell">
+                    <div className="home-map-copy">
+                        <h2>Distribution des infrastructures sur le territoire </h2>
+                        <p>
+                            À gauche, la densité des gares révèle une concentration marquée dans le Nord de la France — notamment dans le Nord-Pas-de-Calais et autour de l'Île-de-France — ainsi que dans quelques départements du Sud-Ouest, tandis qu'une grande partie du territoire reste faiblement desservie par le train. À droite, la carte des aéroports présente un profil très différent : la distribution est plus homogène sur l'ensemble du territoire, avec toutefois des pics notables dans le Nord et dans plusieurs départements du Sud (Pyrénées, Méditerranée), souvent liés à la présence d'aérodromes locaux ou militaires.
+                        </p>
+                        <p>
+                            Cette comparaison souligne une complémentarité géographique entre les deux modes de transport : le train couvre densément les zones urbaines et les corridors historiques, tandis que l'avion offre une présence plus diffuse, notamment dans des territoires moins bien connectés au réseau ferré. Même si certain départements restent faiblement desservis par les deux modes, la combinaison de ces infrastructures permet de répondre à une variété de besoins de mobilité sur l'ensemble du territoire français.
+                        </p>                   
+                    </div>
+                    <div className="home-map-card">
+                        <img src={diff_departement} alt="Distribution des réseaux par département" />
+                    </div>
                 </div>
             </section>
 
