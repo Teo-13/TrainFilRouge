@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import cartetrainImage from "../img/cartetrain.png";
+import cartetrainImage from "../img/gare.png";
 import "./train.css";
 
 gsap.registerPlugin(ScrollTrigger);

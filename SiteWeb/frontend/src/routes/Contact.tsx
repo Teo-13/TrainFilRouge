@@ -25,6 +25,8 @@ const Contact = () => {
   const [formSuccess, setFormSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [afficheFestival, setAfficheFestival] = useState("non");
+
   const forSuite = (etape: number) => {
     setSuite(etape);
     setFormError("");
@@ -126,6 +128,28 @@ const Contact = () => {
                   autoComplete="postal-code"
                 />
               </div>
+
+              <div>
+                <h1>Acidité à afficher</h1>
+                <label className="checkbox-label">
+                    <input
+                        type="checkbox"
+                        checked={afficheFestival === "oui"}
+                        onChange={(e) => setAfficheFestival(e.target.checked ? "oui" : "non")}
+                    />
+                    Festival
+                </label>
+
+                  <label className="checkbox-label">
+                    <input
+                        type="checkbox"
+                        checked={afficheHistoire === "oui"}
+                        onChange={(e) => setaAficheHistoire(e.target.checked ? "oui" : "non")}
+                    />
+                    Lieu historique
+                </label>
+              </div>
+
               <button type="submit" className="btn-submit" disabled={isSubmitting}>
                 {isSubmitting ? "Envoi en cours..." : "Envoyer"}
               </button>

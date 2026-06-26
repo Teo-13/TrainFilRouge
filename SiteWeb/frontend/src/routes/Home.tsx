@@ -262,7 +262,7 @@ const Home = () => {
                         </p>
                     </div>
                     <div className="home-map-card">
-                        <img src={cartetrainImage} alt="Carte du reseau ferroviaire francais" />
+                        <img src={imgTransport} alt="Carte du reseau ferroviaire francais" />
                     </div>
                 </div>
             </section>
