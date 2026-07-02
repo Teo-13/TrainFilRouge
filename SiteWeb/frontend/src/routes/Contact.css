@@ -48,6 +48,25 @@
   color: #047857;
 }
 
+.contact-filter-block {
+  margin: 20px 0 24px;
+  padding: 18px;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+}
+
+.contact-filter-block h3 {
+  margin: 0 0 14px;
+  color: #1e3a8a;
+  font-size: 1.05rem;
+}
+
+.contact-filter-note {
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
 .contact-results {
   max-width: 1180px;
   margin: 42px auto 0;
@@ -78,6 +97,47 @@
   padding: 28px 20px;
   text-align: center;
   color: #64748b;
+}
+
+.contact-empty--dataset {
+  padding: 20px 18px;
+}
+
+.contact-dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.contact-dataset-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-dataset-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contact-dataset-section__header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+}
+
+.contact-dataset-section__header span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .contact-festival-grid {
@@ -160,6 +220,11 @@
   .contact-results {
     margin-top: 32px;
     padding: 0 14px;
+  }
+
+  .contact-dataset-section__header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .contact-festival-grid {

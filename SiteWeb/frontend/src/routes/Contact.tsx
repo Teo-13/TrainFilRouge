@@ -14,24 +14,104 @@ type Festival = {
   adresse: string;
 };
 
+type Musee = {
+  nom: string;
+  region: string;
+  departement: string;
+  commune: string;
+  codePostal: string;
+  adresse: string;
+  lieu: string;
+  categorie: string;
+  domaineThematique: string;
+  histoire: string;
+  atout: string;
+  siteInternet: string;
+  telephone: string;
+};
+
+type LieuHistorique = {
+  nom: string;
+  region: string;
+  departement: string;
+  commune: string;
+  codePostal: string;
+  adresse: string;
+  typeLieu: string;
+  label: string;
+  domaine: string;
+  sousDomaine: string;
+  protection: string;
+  coordonnees: string;
+};
+
+type ResultatsActivites = {
+  festivals: Festival[];
+  musees: Musee[];
+  lieuxHistoriques: LieuHistorique[];
+};
+
+type ApiResponse = {
+  message?: string;
+  filtresActifs?: string[];
+  resultats?: Partial<ResultatsActivites>;
+  festivals?: Festival[];
+};
+
+const initialResultats: ResultatsActivites = {
+  festivals: [],
+  musees: [],
+  lieuxHistoriques: [],
+};
+
+const truncateText = (value: string, maxLength = 220) => {
+  if (!value) {
+    return "";
+  }
+
+  if (value.length <= maxLength) {
+    return value;
+  }
+
+  return `${value.slice(0, maxLength).trim()}...`;
+};
+
+const normaliseUrl = (value: string) => {
+  if (!value) {
+    return "";
+  }
+
+  return value.startsWith("http") ? value : `https://${value}`;
+};
+
 const Contact = () => {
   const [suite, setSuite] = useState(1);
   const [ville, setVille] = useState("");
   const [codePostal, setCodePostal] = useState("");
   const [departement, setDepartement] = useState("");
   const [region, setRegion] = useState("");
-  const [festivals, setFestivals] = useState<Festival[]>([]);
+  const [resultats, setResultats] = useState<ResultatsActivites>(initialResultats);
+  const [filtresActifs, setFiltresActifs] = useState<string[]>([]);
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const [afficheFestival, setAfficheFestival] = useState("non");
+  const [afficheMusee, setAfficheMusee] = useState("non");
+  const [afficheLieuHistorique, setAfficheLieuHistorique] = useState("non");
+
+  const resetResults = () => {
+    setResultats(initialResultats);
+    setFiltresActifs([]);
+    setHasSearched(false);
+  };
 
   const forSuite = (etape: number) => {
     setSuite(etape);
     setFormError("");
     setFormSuccess("");
-    setFestivals([]);
+    resetResults();
   };
 
   const formulaireVille = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,6 +126,11 @@ const Contact = () => {
       codePostal: suite === 1 ? codePostal.trim() : "",
       departement: suite === 2 ? departement.trim() : "",
       region: suite === 3 ? region.trim() : "",
+      filtres: {
+        festivals: afficheFestival === "oui",
+        musees: afficheMusee === "oui",
+        lieuxHistoriques: afficheLieuHistorique === "oui",
+      },
     };
 
     try {
@@ -57,22 +142,205 @@ const Contact = () => {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json().catch(() => null);
+      const data = (await res.json().catch(() => null)) as ApiResponse | null;
 
       if (!res.ok) {
-        throw new Error(data?.message || data?.error || "Erreur serveur");
+        throw new Error(data?.message || "Erreur serveur");
       }
 
-      setFormSuccess(data?.message || "Donnees envoyees.");
-      setFestivals(Array.isArray(data?.festivals) ? data.festivals : []);
+      const resultatsRecus = data?.resultats;
+
+      setFormSuccess(data?.message || "Recherche terminee.");
+      setResultats({
+        festivals: Array.isArray(resultatsRecus?.festivals)
+          ? resultatsRecus.festivals
+          : Array.isArray(data?.festivals)
+            ? data.festivals
+            : [],
+        musees: Array.isArray(resultatsRecus?.musees) ? resultatsRecus.musees : [],
+        lieuxHistoriques: Array.isArray(resultatsRecus?.lieuxHistoriques)
+          ? resultatsRecus.lieuxHistoriques
+          : [],
+      });
+      setFiltresActifs(
+        Array.isArray(data?.filtresActifs) ? data.filtresActifs : ["festivals", "musees", "lieuxHistoriques"],
+      );
+      setHasSearched(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Erreur inconnue";
       setFormError(message);
-      setFestivals([]);
+      resetResults();
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const renderFiltres = () => (
+    <div className="contact-filter-block">
+      <h3>Datasets a afficher</h3>
+      <div className="options-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={afficheFestival === "oui"}
+            onChange={(e) => setAfficheFestival(e.target.checked ? "oui" : "non")}
+          />
+          Dataset Festivals
+        </label>
+
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={afficheMusee === "oui"}
+            onChange={(e) => setAfficheMusee(e.target.checked ? "oui" : "non")}
+          />
+          Dataset Musees
+        </label>
+
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={afficheLieuHistorique === "oui"}
+            onChange={(e) => setAfficheLieuHistorique(e.target.checked ? "oui" : "non")}
+          />
+          Dataset Lieux historiques
+        </label>
+      </div>
+    </div>
+  );
+
+  const sections = [
+    {
+      key: "festivals",
+      title: "Festivals",
+      items: resultats.festivals,
+      renderCard: (festival: Festival) => (
+        <article
+          className="contact-festival-card"
+          key={`${festival.nom}-${festival.commune}-${festival.codePostal}`}
+        >
+          <div className="contact-festival-card__top">
+            <span className="contact-festival-card__tag">{festival.discipline || "Festival"}</span>
+            <h3>{festival.nom}</h3>
+          </div>
+
+          <div className="contact-festival-card__content">
+            <p>
+              <strong>Lieu :</strong> {festival.commune}, {festival.departement}
+            </p>
+            <p>
+              <strong>Region :</strong> {festival.region}
+            </p>
+            <p>
+              <strong>Code postal :</strong> {festival.codePostal}
+            </p>
+            <p>
+              <strong>Periode :</strong> {festival.periode || "Non renseignee"}
+            </p>
+            <p>
+              <strong>Adresse :</strong> {festival.adresse || "Non renseignee"}
+            </p>
+          </div>
+
+          {festival.siteInternet && (
+            <a
+              className="contact-festival-card__link"
+              href={normaliseUrl(festival.siteInternet)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Voir le site
+            </a>
+          )}
+        </article>
+      ),
+    },
+    {
+      key: "musees",
+      title: "Musees",
+      items: resultats.musees,
+      renderCard: (musee: Musee) => (
+        <article
+          className="contact-festival-card"
+          key={`${musee.nom}-${musee.commune}-${musee.codePostal}`}
+        >
+          <div className="contact-festival-card__top">
+            <span className="contact-festival-card__tag">{musee.categorie || "Musee"}</span>
+            <h3>{musee.nom}</h3>
+          </div>
+
+          <div className="contact-festival-card__content">
+            <p>
+              <strong>Lieu :</strong> {musee.commune}, {musee.departement}
+            </p>
+            <p>
+              <strong>Region :</strong> {musee.region}
+            </p>
+            <p>
+              <strong>Adresse :</strong> {musee.adresse || musee.lieu || "Non renseignee"}
+            </p>
+            <p>
+              <strong>Domaines :</strong> {musee.domaineThematique || "Non renseignes"}
+            </p>
+            <p>
+              <strong>Resume :</strong> {truncateText(musee.atout || musee.histoire) || "Non renseigne"}
+            </p>
+            <p>
+              <strong>Telephone :</strong> {musee.telephone || "Non renseigne"}
+            </p>
+          </div>
+
+          {musee.siteInternet && (
+            <a
+              className="contact-festival-card__link"
+              href={normaliseUrl(musee.siteInternet)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Voir le site
+            </a>
+          )}
+        </article>
+      ),
+    },
+    {
+      key: "lieuxHistoriques",
+      title: "Lieux historiques",
+      items: resultats.lieuxHistoriques,
+      renderCard: (lieu: LieuHistorique) => (
+        <article
+          className="contact-festival-card"
+          key={`${lieu.nom}-${lieu.commune}-${lieu.codePostal}`}
+        >
+          <div className="contact-festival-card__top">
+            <span className="contact-festival-card__tag">{lieu.typeLieu || "Patrimoine"}</span>
+            <h3>{lieu.nom}</h3>
+          </div>
+
+          <div className="contact-festival-card__content">
+            <p>
+              <strong>Lieu :</strong> {lieu.commune}, {lieu.departement}
+            </p>
+            <p>
+              <strong>Region :</strong> {lieu.region}
+            </p>
+            <p>
+              <strong>Label :</strong> {lieu.label || "Non renseigne"}
+            </p>
+            <p>
+              <strong>Domaine :</strong> {lieu.domaine || lieu.sousDomaine || "Non renseigne"}
+            </p>
+            <p>
+              <strong>Adresse :</strong> {lieu.adresse || "Non renseignee"}
+            </p>
+            <p>
+              <strong>Protection :</strong> {truncateText(lieu.protection) || "Non renseignee"}
+            </p>
+          </div>
+        </article>
+      ),
+    },
+  ].filter((section) => filtresActifs.includes(section.key));
 
   return (
     <div className="transport-container contact-page">
@@ -128,28 +396,7 @@ const Contact = () => {
                   autoComplete="postal-code"
                 />
               </div>
-
-              <div>
-                <h1>Acidité à afficher</h1>
-                <label className="checkbox-label">
-                    <input
-                        type="checkbox"
-                        checked={afficheFestival === "oui"}
-                        onChange={(e) => setAfficheFestival(e.target.checked ? "oui" : "non")}
-                    />
-                    Festival
-                </label>
-
-                  <label className="checkbox-label">
-                    <input
-                        type="checkbox"
-                        checked={afficheHistoire === "oui"}
-                        onChange={(e) => setaAficheHistoire(e.target.checked ? "oui" : "non")}
-                    />
-                    Lieu historique
-                </label>
-              </div>
-
+              {renderFiltres()}
               <button type="submit" className="btn-submit" disabled={isSubmitting}>
                 {isSubmitting ? "Envoi en cours..." : "Envoyer"}
               </button>
@@ -167,6 +414,7 @@ const Contact = () => {
                   placeholder="Departement"
                 />
               </div>
+              {renderFiltres()}
               <button type="submit" className="btn-submit" disabled={isSubmitting}>
                 {isSubmitting ? "Envoi en cours..." : "Envoyer"}
               </button>
@@ -184,6 +432,7 @@ const Contact = () => {
                   placeholder="Region"
                 />
               </div>
+              {renderFiltres()}
               <button type="submit" className="btn-submit" disabled={isSubmitting}>
                 {isSubmitting ? "Envoi en cours..." : "Envoyer"}
               </button>
@@ -197,55 +446,37 @@ const Contact = () => {
 
       <section className="contact-results">
         <div className="contact-results__header">
-          <h2>Festivals trouves</h2>
-          <p>Les resultats s&apos;affichent selon la ville, le departement ou la region saisis.</p>
+          <h2>Resultats trouves</h2>
+          <p>Les datasets s&apos;affichent selon le filtre choisi dans le formulaire.</p>
         </div>
 
-        {festivals.length === 0 ? (
+        {!hasSearched ? (
           <div className="contact-empty">
-            <p>Aucun festival affiche pour le moment.</p>
+            <p>Lancez une recherche pour afficher les datasets correspondants.</p>
+          </div>
+        ) : sections.length === 0 ? (
+          <div className="contact-empty">
+            <p>Aucun dataset selectionne pour l&apos;affichage.</p>
           </div>
         ) : (
-          <div className="contact-festival-grid">
-            {festivals.map((festival) => (
-              <article
-                className="contact-festival-card"
-                key={`${festival.nom}-${festival.commune}-${festival.codePostal}`}
-              >
-                <div className="contact-festival-card__top">
-                  <span className="contact-festival-card__tag">{festival.discipline || "Festival"}</span>
-                  <h3>{festival.nom}</h3>
+          <div className="contact-dataset-list">
+            {sections.map((section) => (
+              <section className="contact-dataset-section" key={section.key}>
+                <div className="contact-dataset-section__header">
+                  <h3>{section.title}</h3>
+                  <span>{section.items.length} resultat(s)</span>
                 </div>
 
-                <div className="contact-festival-card__content">
-                  <p>
-                    <strong>Lieu :</strong> {festival.commune}, {festival.departement}
-                  </p>
-                  <p>
-                    <strong>Region :</strong> {festival.region}
-                  </p>
-                  <p>
-                    <strong>Code postal :</strong> {festival.codePostal}
-                  </p>
-                  <p>
-                    <strong>Periode :</strong> {festival.periode || "Non renseignee"}
-                  </p>
-                  <p>
-                    <strong>Adresse :</strong> {festival.adresse || "Non renseignee"}
-                  </p>
-                </div>
-
-                {festival.siteInternet && (
-                  <a
-                    className="contact-festival-card__link"
-                    href={festival.siteInternet.startsWith("http") ? festival.siteInternet : `https://${festival.siteInternet}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Voir le site
-                  </a>
+                {section.items.length === 0 ? (
+                  <div className="contact-empty contact-empty--dataset">
+                    <p>Aucun resultat pour ce dataset.</p>
+                  </div>
+                ) : (
+                  <div className="contact-festival-grid">
+                    {section.items.map((item) => section.renderCard(item as never))}
+                  </div>
                 )}
-              </article>
+              </section>
             ))}
           </div>
         )}

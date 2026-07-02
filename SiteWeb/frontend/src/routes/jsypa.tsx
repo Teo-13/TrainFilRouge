@@ -103,7 +103,7 @@ const Jsypa = () => {
         {
             key: "train",
             title: resultat?.trainName || "Train",
-            badge: "TR",
+            badge: "🚆",
             details: [
                 `Ville de depart : ${villeDepart || "..."}`,
                 `Gare de depart : ${resultat?.trainGareDepart || "..."}`,
@@ -118,7 +118,7 @@ const Jsypa = () => {
         {
             key: "voiture",
             title: resultat?.voitureName || "Voiture",
-            badge: "VO",
+            badge: "🚗",
             details: [
                 `Ville de depart : ${villeDepart || "..."}`,
                 `Temps : ${resultat ? `${formatNumber(resultat.voitureTemps_heures, 1)} h` : "..."}`,
@@ -131,7 +131,7 @@ const Jsypa = () => {
         {
             key: "avion",
             title: resultat?.avionName || "Avion",
-            badge: "AV",
+            badge: "✈️",
             details: [
                 `Ville de depart : ${villeDepart || "..."}`,
                 `Aeroport de depart : ${resultat?.avionAeroportDepart || "..."}`,

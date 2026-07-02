@@ -224,11 +224,9 @@ const Home = () => {
     return (
         <div className="home-page">
             <section className="hero-search">
-                <h1>Comparer les transports, comprendre leur impact et replacer le tourisme dans le paysage francais</h1>
+                <h1>Comparer les transports, comprendre leur impact </h1>
                 <p>
-                    Garde ton calculateur d&apos;emissions CO2 selon la distance, puis lis les grands ordres de grandeur
-                    sur le train, la voiture, l&apos;avion, la pollution liee aux transports et la place du tourisme en
-                    France. <a href="#emission">Aller au calculateur</a>
+                    🚆🚗✈️
                 </p>
             </section>
 
